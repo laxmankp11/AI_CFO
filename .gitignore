@@ -1,0 +1,10 @@
+backend/.env
+backend/vendor/
+backend/storage/
+backend/database/*.sqlite
+backend/database/tenant*
+ai_service/venv/
+ai_service/__pycache__/
+ai_service/.env
+*.pyc
+.DS_Store
