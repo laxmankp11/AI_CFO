@@ -1,0 +1,22 @@
+{
+  "ASSET_THRESHOLD": {
+    "value": 20000.0,
+    "description": "Any item purchase above this threshold is classified as a Fixed Asset rather than an Expense."
+  },
+  "GST_TRIGGER": {
+    "value": 50000.0,
+    "description": "Any purchase above this amount requires tax verification if tax components are missing."
+  },
+  "INVENTORY_METHOD": {
+    "value": "FIFO",
+    "description": "Default cost flow assumption method for inventory tracking."
+  },
+  "DEPRECIATION_METHOD": {
+    "value": "WDV",
+    "description": "Default method for Fixed Asset depreciation (Written Down Value)."
+  },
+  "CREDIT_TERMS_DEFAULT": {
+    "value": 30,
+    "description": "Default payment terms in days when credit is mentioned but days are unspecified."
+  }
+}

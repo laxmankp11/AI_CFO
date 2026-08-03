@@ -34,3 +34,20 @@ class ScoringService:
             score += 0.1
             
         return round(score, 2)
+
+    @staticmethod
+    def gate_decision(confidence: float) -> str:
+        """
+        Determines the Confidence Gate routing based on score thresholds.
+        
+        Returns:
+            "auto_approve" if confidence >= 0.95
+            "pending_confirmation" if confidence >= 0.85
+            "requires_clarification" if confidence < 0.85
+        """
+        if confidence >= 0.95:
+            return "auto_approve"
+        elif confidence >= 0.85:
+            return "pending_confirmation"
+        else:
+            return "requires_clarification"

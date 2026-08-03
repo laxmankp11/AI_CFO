@@ -23,10 +23,16 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $tenantId = null;
+        $tenantName = null;
         if (!$user->is_super_admin) {
             $pivot = DB::table('user_tenants')->where('user_id', $user->id)->first();
             if ($pivot) {
                 $tenantId = $pivot->tenant_id;
+                $tenantInfo = DB::table('tenants')->where('id', $tenantId)->first();
+                if ($tenantInfo) {
+                    $tenantData = json_decode($tenantInfo->data, true);
+                    $tenantName = $tenantData['company_name'] ?? 'Your Company';
+                }
             }
         }
 
@@ -39,6 +45,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'is_super_admin' => $user->is_super_admin,
                 'tenant_id' => $tenantId,
+                'tenant_name' => $tenantName,
             ]
         ]);
     }

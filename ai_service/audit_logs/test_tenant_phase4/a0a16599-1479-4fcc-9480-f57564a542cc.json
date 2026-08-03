@@ -1,0 +1,116 @@
+{
+  "audit_id": "a0a16599-1479-4fcc-9480-f57564a542cc",
+  "tenant_id": "test_tenant_phase4",
+  "timestamp": "2026-08-03T07:13:01.177103Z",
+  "original_prompt": "",
+  "detected_intent": "compound",
+  "planner_output": {
+    "is_compound": false,
+    "reasoning": "Test approval and idempotency",
+    "steps": [
+      {
+        "step_id": "step_1",
+        "agent_type": "expense",
+        "action": "record_expense",
+        "description": "Record a 15,00,000 expense",
+        "prompt_fragment": "Pay 15,00,000 to Mock Vendor",
+        "parameters_json": null,
+        "depends_on": []
+      }
+    ]
+  },
+  "validator_corrections": [],
+  "step_results": [
+    {
+      "step_id": "step_1",
+      "agent_type": "expense",
+      "action": "record_expense",
+      "description": "Record a 15,00,000 expense",
+      "status": "waiting_approval",
+      "data": {
+        "extraction": {
+          "module": "finance",
+          "clarification_needed": true,
+          "clarification_question": "This transaction is \u20b91,500,000.00 which is above our \u20b950,000.00 tax verification limit. Is GST included in this amount, and do you have a tax invoice?",
+          "approval_required": true,
+          "approval_reasons": [
+            "Transaction amount \u20b91,500,000.00 requires approval (Threshold: \u20b91,000,000.00)."
+          ],
+          "intent": "asset_purchase",
+          "total_amount": 1500000.0,
+          "entity": {
+            "id": null,
+            "name": "Mock Vendor",
+            "is_new": false
+          },
+          "operational_data": null,
+          "line_items": [
+            {
+              "account_id": null,
+              "account_name": "Asset",
+              "amount": 1500000.0,
+              "dc": "debit",
+              "description": null
+            },
+            {
+              "account_id": null,
+              "account_name": "Bank",
+              "amount": 1500000.0,
+              "dc": "credit",
+              "description": null
+            }
+          ],
+          "payment_channel": null,
+          "narration": null
+        },
+        "confidence": 0.54,
+        "gate_decision": "requires_approval",
+        "applied_policies": [
+          "ASSET_THRESHOLD",
+          "GST_TRIGGER",
+          "APPROVAL_THRESHOLD"
+        ],
+        "policy_overrides": {
+          "intent": {
+            "original": "expense",
+            "new": "asset_purchase",
+            "reason": "Amount \u20b91,500,000.00 meets or exceeds asset capitalization threshold of \u20b920,000.00."
+          },
+          "line_item_Asset": {
+            "original": "Expense",
+            "new": "Asset",
+            "reason": "Reclassified debit account to Asset due to capitalization threshold."
+          },
+          "clarification_needed": {
+            "original": false,
+            "new": true,
+            "reason": "Verification required for transactions >= \u20b950,000.00 without tax details."
+          },
+          "approval_required": {
+            "original": false,
+            "new": true,
+            "reason": "High value transaction >= \u20b91,000,000.00"
+          }
+        }
+      },
+      "error": "Policy Gate Blocked: Transaction amount \u20b91,500,000.00 requires approval (Threshold: \u20b91,000,000.00)."
+    }
+  ],
+  "ai_model_used": "gemini-3.6-flash",
+  "ai_provider": "gemini",
+  "overall_confidence": 0.0,
+  "workflow_state": "WaitingApproval",
+  "prompt_version": "v1.0",
+  "policy_version": "v1.0",
+  "execution_duration_ms": 0,
+  "llm_time_ms": 0,
+  "user_approval": "pending",
+  "rollback_status": "none",
+  "rollback_details": {
+    "rolled_back_steps": [],
+    "kept_steps": [],
+    "compensation_log": [
+      "Initiating compensation flow due to failure at step 'step_1' (record_expense)."
+    ]
+  }
+}

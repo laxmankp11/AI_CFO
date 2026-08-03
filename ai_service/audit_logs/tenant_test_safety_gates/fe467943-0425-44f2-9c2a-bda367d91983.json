@@ -1,0 +1,99 @@
+{
+  "audit_id": "fe467943-0425-44f2-9c2a-bda367d91983",
+  "tenant_id": "tenant_test_safety_gates",
+  "timestamp": "2026-08-03T07:02:45.359982Z",
+  "original_prompt": "Today Rahul Technologies transferred \u20b95,00,000. Allocate the payment against oldest invoices. Generate receipt. Update customer outstanding balance. Show remaining receivable.",
+  "detected_intent": "compound",
+  "planner_output": {
+    "is_compound": true,
+    "reasoning": "User wishes to record a customer payment of 5,00,000, allocate against oldest invoices, generate a receipt, and show the outstanding/remaining balance.",
+    "steps": [
+      {
+        "step_id": "step_1",
+        "agent_type": "sales",
+        "action": "record_customer_payment",
+        "description": "Record payment of \u20b95,00,000 from Rahul Technologies and allocate to oldest invoices.",
+        "prompt_fragment": "Rahul Technologies transferred \u20b95,00,000. Allocate to oldest invoices.",
+        "parameters_json": "{\"customer_name\": \"Rahul Technologies\", \"amount\": 500000.00, \"bank\": \"HDFC Bank\"}",
+        "depends_on": []
+      },
+      {
+        "step_id": "step_2",
+        "agent_type": "reporting",
+        "action": "generate_report",
+        "description": "Generate payment receipt HTML with allocation details.",
+        "prompt_fragment": "Generate receipt.",
+        "parameters_json": null,
+        "depends_on": [
+          "step_1"
+        ]
+      },
+      {
+        "step_id": "step_3",
+        "agent_type": "reporting",
+        "action": "generate_report",
+        "description": "Calculate outstanding balance and display remaining receivable.",
+        "prompt_fragment": "Update customer outstanding balance. Show remaining receivable.",
+        "parameters_json": null,
+        "depends_on": [
+          "step_1"
+        ]
+      }
+    ]
+  },
+  "validator_corrections": [],
+  "step_results": [
+    {
+      "step_id": "step_1",
+      "agent_type": "sales",
+      "action": "record_customer_payment",
+      "status": "completed",
+      "data": {
+        "customer": "Rahul Technologies",
+        "amount": 500000.0,
+        "allocations": [
+          {
+            "invoice_number": "INV-2026-001",
+            "invoice_amount": 350000,
+            "allocated": 350000,
+            "new_status": "PAID",
+            "date": "2026-07-01"
+          },
+          {
+            "invoice_number": "INV-2026-002",
+            "invoice_amount": 250000,
+            "allocated": 150000.0,
+            "new_status": "PARTIALLY_PAID",
+            "date": "2026-07-15"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": "step_2",
+      "agent_type": "reporting",
+      "action": "generate_report",
+      "status": "completed",
+      "data": {
+        "receipt_html": "\n    <div style=\"font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px;\">\n        <h2 style=\"color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;\">RECEIPT OF PAYMENT</h2>\n        <table style=\"width: 100%; margin-bottom: 20px;\">\n            <tr><td><strong>Received From:</strong> Rahul Technologies</td><td><strong>Receipt Date:</strong> 2026-08-03</td></tr>\n            <tr><td><strong>Payment Amount:</strong> \u20b95,00,000.00</td><td><strong>Payment Method:</strong> Bank Transfer</td></tr>\n            <tr><td><strong>Deposited In:</strong> HDFC Bank</td><td><strong>Outstanding Balance:</strong> \u20b91,00,000.00</td></tr>\n        </table>\n        \n        <h4 style=\"border-bottom: 1px solid #eee; padding-bottom: 5px;\">Allocation Breakdowns:</h4>\n        <table style=\"width: 100%; border-collapse: collapse;\">\n            <thead>\n                <tr style=\"background: #f5f5f5;\">\n                    <th style=\"padding: 8px; text-align: left;\">Invoice No</th>\n                    <th style=\"padding: 8px; text-align: left;\">Date</th>\n                    <th style=\"padding: 8px; text-align: right;\">Orig. Amount</th>\n                    <th style=\"padding: 8px; text-align: right;\">Allocated</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td style=\"padding: 8px;\">INV-2026-001</td>\n                    <td style=\"padding: 8px;\">2026-07-01</td>\n                    <td style=\"padding: 8px; text-align: right;\">\u20b93,50,000.00</td>\n                    <td style=\"padding: 8px; text-align: right; color: green;\">\u20b93,50,000.00 (Fully Paid)</td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 8px;\">INV-2026-002</td>\n                    <td style=\"padding: 8px;\">2026-07-15</td>\n                    <td style=\"padding: 8px; text-align: right;\">\u20b92,50,000.00</td>\n                    <td style=\"padding: 8px; text-align: right; color: green;\">\u20b91,50,000.00 (Partially Paid)</td>\n                </tr>\n            </tbody>\n        </table>\n        <p style=\"margin-top: 20px; font-size: 12px; color: #888;\">Thank you for your payment. This is an auto-generated statement.</p>\n    </div>\n    "
+      }
+    },
+    {
+      "step_id": "step_3",
+      "agent_type": "reporting",
+      "action": "generate_report",
+      "status": "completed",
+      "data": {
+        "old_balance": 600000,
+        "new_balance": 100000.0,
+        "remaining_receivable": 100000.0
+      }
+    }
+  ],
+  "ai_model_used": "gemini-3.6-flash",
+  "ai_provider": "gemini",
+  "overall_confidence": 0.98,
+  "user_approval": "pending",
+  "rollback_status": "none",
+  "rollback_details": null
+}

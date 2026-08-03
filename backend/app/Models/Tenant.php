@@ -22,7 +22,12 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         'industry',
         'pan',
         'gstin',
-        'financial_year_start'
+        'financial_year_start',
+        'enabled_modules'
+    ];
+
+    protected $casts = [
+        'enabled_modules' => 'array',
     ];
 
     public static function getCustomColumns(): array
@@ -37,7 +42,14 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'industry',
             'pan',
             'gstin',
-            'financial_year_start'
+            'financial_year_start',
+            'enabled_modules'
         ];
+    }
+
+    public function hasModule(string $module): bool
+    {
+        $modules = $this->enabled_modules ?? ['core_accounting', 'inventory'];
+        return in_array($module, $modules, true);
     }
 }

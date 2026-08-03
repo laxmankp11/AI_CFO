@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AICFO - Virtual CFO Prototype</title>
   <link rel="stylesheet" href="styles.css?v=2" />
 </head>
+
 <body>
 
   <!-- ================= LOGIN SCREEN ================= -->
@@ -37,15 +39,18 @@
   </div>
 
   <div class="app-layout" id="main-app" style="display: none;">
-    
+
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
-      <div class="logo">
-        <i class="fas fa-chart-line"></i> AI<span>CFO</span>
+      <div class="logo" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div><i class="fas fa-chart-line"></i> AI<span>CFO</span></div>
+        <div id="sidebar-company-name" style="font-size: 0.7rem; color: var(--emerald-primary); font-weight: normal; opacity: 0.8; margin-top: 2px;"></div>
       </div>
-      
+
       <div id="nav-business-owner" style="display: none;">
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">AI Business OS</div>
+        <div
+          style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+          AI Business OS</div>
         <nav class="nav-menu" style="margin-bottom: 1.5rem;">
           <a class="nav-item active" id="nav-ai-hub" onclick="switchView('view-ai-hub', this)">
             <i class="fas fa-robot"></i> AI CFO Hub ⭐
@@ -55,7 +60,9 @@
           </a>
         </nav>
 
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Operations</div>
+        <div
+          style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+          Operations</div>
         <nav class="nav-menu" style="margin-bottom: 1.5rem;">
           <a class="nav-item" onclick="switchView('view-invoicing', this)">
             <i class="fas fa-file-invoice-dollar"></i> Sales
@@ -66,8 +73,8 @@
           <a class="nav-item" onclick="switchView('view-ledger', this)">
             <i class="fas fa-book"></i> Finance
           </a>
-          <a class="nav-item" onclick="switchView('view-coming-soon', this)">
-            <i class="fas fa-boxes"></i> Inventory
+          <a class="nav-item" id="nav-item-inventory" onclick="switchView('view-coming-soon', this)">
+            <i class="fas fa-boxes"></i> Inventory <span id="inventory-module-badge" class="badge badge-purple" style="font-size:0.65rem; margin-left:auto; display:none;">Add-on</span>
           </a>
           <a class="nav-item" onclick="switchView('view-coming-soon', this)">
             <i class="fas fa-users"></i> CRM
@@ -86,7 +93,9 @@
           </a>
         </nav>
 
-        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Administration</div>
+        <div
+          style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+          Administration</div>
         <nav class="nav-menu">
           <a id="nav-item-business" class="nav-item" onclick="switchView('view-business-admin', this)">
             <i class="fas fa-building"></i> Master Data
@@ -100,7 +109,9 @@
         </nav>
       </div>
 
-      <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2rem; margin-bottom: 0.5rem; display: none;" id="nav-super-header">System</div>
+      <div
+        style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2rem; margin-bottom: 0.5rem; display: none;"
+        id="nav-super-header">System</div>
       <nav class="nav-menu">
         <a id="nav-item-super" class="nav-item" onclick="switchView('view-super-admin', this)" style="display: none;">
           <i class="fas fa-crown"></i> Super Admin
@@ -113,106 +124,155 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      
+
       <!-- Top Header -->
       <header class="top-header">
         <div style="display:flex; align-items:center; gap:1rem;">
           <div style="text-align: right;">
             <div id="user-name-display" style="font-size: 0.875rem; font-weight: 600;">Laxman Parmar</div>
-            <div id="user-role-display" style="font-size: 0.75rem; color: var(--emerald-primary);">Active: Acme Corp</div>
+            <div id="user-role-display" style="font-size: 0.75rem; color: var(--emerald-primary);">Active: Acme Corp
+            </div>
           </div>
-          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--emerald-glow); display:flex; align-items:center; justify-content:center;">
+          <div
+            style="width: 36px; height: 36px; border-radius: 50%; background: var(--emerald-glow); display:flex; align-items:center; justify-content:center;">
             <i class="fas fa-user"></i>
           </div>
         </div>
       </header>
 
       <div class="content-wrapper">
-        
+
         <section id="view-dashboard" class="view-section">
-          <div class="panel-header" style="justify-content: space-between;">
-            <div class="header-title"><i class="fas fa-chart-pie"></i> Executive Dashboard</div>
-            <div style="display: flex; align-items: center; gap: 1rem; background: var(--card-bg); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
-              <span style="color: var(--text-muted); font-size: 0.9rem;">Business Health</span>
-              <div style="font-size: 1.5rem; font-weight: bold; color: var(--emerald-primary);">86<span style="font-size: 0.9rem; color: var(--text-muted);">/100</span></div>
+
+          <!-- Section A: Morning Greeting -->
+          <div class="exec-greeting" id="exec-greeting">
+            <h1>👋 <span id="exec-greeting-text">Good Morning</span>, <span id="exec-user-name">Laxman</span></h1>
+            <div class="health-badge" id="exec-health-badge">
+              <i class="fas fa-heartbeat"></i> Business Health: <span id="exec-health-score">--</span> / 100
+            </div>
+            <div class="health-msg" id="exec-health-msg">Loading your business overview...</div>
+            <div class="top-attention" id="exec-top-attention" style="display:none;">
+              <i class="fas fa-bullseye" style="color: var(--emerald-primary);"></i>
+              <strong>Recommended first action:</strong> <span id="exec-top-action"></span>
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem;">
-            <div class="glass-panel" style="text-align: center; padding: 1.5rem;">
-              <h3 style="color: var(--text-muted); font-weight: normal; margin-bottom: 0.5rem;">Total Cash</h3>
-              <div id="dash-cash" style="font-size: 2rem; font-weight: bold; color: var(--emerald-primary);">₹0</div>
+
+          <!-- Section B: KPI Strip -->
+          <div class="exec-kpi-strip" id="exec-kpi-strip">
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-star" style="color:gold;"></i> Business Health</div>
+              <div class="exec-kpi-value" id="kpi-health">--</div>
             </div>
-            <div class="glass-panel" style="text-align: center; padding: 1.5rem;">
-              <h3 style="color: var(--text-muted); font-weight: normal; margin-bottom: 0.5rem;">Accounts Receivable</h3>
-              <div id="dash-receivable" style="font-size: 2rem; font-weight: bold; color: var(--emerald-primary);">₹0</div>
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-wallet"></i> Cash Available</div>
+              <div class="exec-kpi-value" id="kpi-cash">₹0</div>
             </div>
-            <div class="glass-panel" style="text-align: center; padding: 1.5rem;">
-              <h3 style="color: var(--text-muted); font-weight: normal; margin-bottom: 0.5rem;">Unbilled Invoices</h3>
-              <div id="dash-unbilled" style="font-size: 2rem; font-weight: bold; color: var(--accent-purple);">₹0</div>
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-arrow-up" style="color:var(--emerald-primary);"></i> Money Earned Yesterday</div>
+              <div class="exec-kpi-value" id="kpi-earned" style="color:var(--emerald-primary);">₹0</div>
             </div>
-            <div class="glass-panel" style="text-align: center; padding: 1.5rem;">
-              <h3 style="color: var(--text-muted); font-weight: normal; margin-bottom: 0.5rem;">Accounts Payable</h3>
-              <div id="dash-payable" style="font-size: 2rem; font-weight: bold; color: var(--danger-red);">₹0</div>
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-arrow-down" style="color:var(--danger-red);"></i> Money Spent Yesterday</div>
+              <div class="exec-kpi-value" id="kpi-spent" style="color:var(--danger-red);">₹0</div>
+            </div>
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-calendar-alt"></i> Cash in 30 Days</div>
+              <div class="exec-kpi-value" id="kpi-projected">₹0</div>
+            </div>
+            <div class="exec-kpi-card">
+              <div class="exec-kpi-label"><i class="fas fa-shield-alt"></i> Cash Runway</div>
+              <div class="exec-kpi-value" id="kpi-runway">-- Days</div>
             </div>
           </div>
-          
-          <div class="glass-panel" style="margin-top: 2rem;">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-history"></i> Recent Activity</div>
+
+          <!-- Section C: Warnings -->
+          <div class="exec-warnings" id="exec-warnings"></div>
+
+          <!-- Section D: Today's Priorities (Action Cards) -->
+          <div class="exec-section-header"><i class="fas fa-tasks" style="color:var(--accent-purple);"></i> Today's Priorities</div>
+          <div class="exec-priorities" id="exec-priorities">
+            <div style="color: var(--text-muted); padding: 1rem; border: 1px dashed var(--border-glass); border-radius: 8px; text-align:center;">
+              Loading AI priorities...
             </div>
-            <table class="data-table" style="margin-top: 1rem;">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Customer</th>
-                  <th>Invoice #</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="dash-activity-body">
-                <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading activity...</td></tr>
-              </tbody>
-            </table>
           </div>
+
+          <!-- Section E: Intelligence Suite -->
+          <div class="exec-section-header"><i class="fas fa-brain" style="color:var(--accent-blue);"></i> Intelligence Suite</div>
+          <div class="exec-intelligence" id="exec-intelligence"></div>
+
+          <!-- Section F: Business Outlook -->
+          <div class="exec-section-header"><i class="fas fa-chart-line" style="color:var(--emerald-primary);"></i> Business Outlook</div>
+          <div class="exec-kpi-strip" id="exec-forecast" style="grid-template-columns: repeat(3, 1fr);"></div>
+
+          <!-- Section G: Today's Wins -->
+          <div class="exec-section-header"><i class="fas fa-trophy" style="color:gold;"></i> Today's Wins</div>
+          <div class="exec-wins" id="exec-wins"></div>
+
+          <!-- Section H: AI Confidence -->
+          <div class="exec-section-header"><i class="fas fa-robot" style="color:var(--accent-purple);"></i> AI Confidence</div>
+          <div class="exec-confidence" id="exec-confidence"></div>
+
+          <!-- Section I: Business Timeline -->
+          <div class="exec-section-header"><i class="fas fa-clock" style="color:var(--text-muted);"></i> Business Timeline</div>
+          <div class="exec-timeline" id="exec-timeline"></div>
+
         </section>
 
         <!-- ================= VIEW: VIRTUAL CFO ================= -->
         <section id="view-ai-hub" class="view-section">
           <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-            
+
             <!-- Left Column: Daily Brief & Command Bar -->
             <div style="display: flex; flex-direction: column; gap: 2rem;">
-              
+
               <!-- Daily Business Brief -->
               <div class="glass-panel">
                 <div class="panel-header">
-                  <div class="header-title"><i class="fas fa-sun" style="color: var(--emerald-primary)"></i> Good Morning! Here's your Daily Brief.</div>
+                  <div class="header-title"><i class="fas fa-sun" style="color: var(--emerald-primary)"></i> Good
+                    Morning! Here's your Daily Brief.</div>
                 </div>
                 <div style="margin-top: 1rem; color: var(--text-color);">
-                  <div style="margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;">Yesterday</div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i class="fas fa-check-circle" style="color: var(--emerald-primary)"></i> Collected ₹42,500</div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i class="fas fa-check-circle" style="color: var(--emerald-primary)"></i> Paid ₹8,200</div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i class="fas fa-info-circle" style="color: var(--accent-purple)"></i> GST Payable increased by ₹1,440</div>
-                  
-                  <div style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;">Alerts & Suggestions</div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--danger-red);"><i class="fas fa-exclamation-triangle"></i> ABC Ltd invoice is overdue</div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--danger-red);"><i class="fas fa-exclamation-triangle"></i> Inventory low for Printer Ink</div>
-                  
+                  <div
+                    style="margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;">
+                    Yesterday</div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i
+                      class="fas fa-check-circle" style="color: var(--emerald-primary)"></i> Collected ₹42,500</div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i
+                      class="fas fa-check-circle" style="color: var(--emerald-primary)"></i> Paid ₹8,200</div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"><i
+                      class="fas fa-info-circle" style="color: var(--accent-purple)"></i> GST Payable increased by
+                    ₹1,440</div>
+
+                  <div
+                    style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-muted); text-transform: uppercase; font-size: 0.8rem;">
+                    Alerts & Suggestions</div>
+                  <div
+                    style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--danger-red);">
+                    <i class="fas fa-exclamation-triangle"></i> ABC Ltd invoice is overdue</div>
+                  <div
+                    style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--danger-red);">
+                    <i class="fas fa-exclamation-triangle"></i> Inventory low for Printer Ink</div>
+
                   <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); font-size: 0.8rem;"><i class="fas fa-paper-plane"></i> Remind ABC Ltd</button>
-                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); font-size: 0.8rem;"><i class="fas fa-shopping-cart"></i> Order Ink</button>
+                    <button class="btn"
+                      style="background: var(--card-bg); border: 1px solid var(--border-color); font-size: 0.8rem;"><i
+                        class="fas fa-paper-plane"></i> Remind ABC Ltd</button>
+                    <button class="btn"
+                      style="background: var(--card-bg); border: 1px solid var(--border-color); font-size: 0.8rem;"><i
+                        class="fas fa-shopping-cart"></i> Order Ink</button>
                   </div>
                 </div>
               </div>
 
               <!-- AI Command Center (Input) -->
-              <div class="glass-panel" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end;">
+              <div class="glass-panel"
+                style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end;">
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
                   Ask me anything or tell me what to do. Example: "Create invoice for ABC" or "Who hasn't paid me?"
                 </p>
                 <div class="input-wrapper">
-                  <input type="text" id="ai-input" class="chat-input" placeholder="Type a command..." autocomplete="off" />
+                  <input type="text" id="ai-input" class="chat-input" placeholder="Type a command..."
+                    autocomplete="off" />
                   <button class="submit-btn" onclick="sendToAI()">
                     <i class="fas fa-paper-plane"></i>
                   </button>
@@ -229,44 +289,7 @@
               <div class="panel-header">
                 <div class="header-title"><i class="fas fa-stream" style="color: var(--accent-purple)"></i> AI Activity Timeline</div>
               </div>
-              <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; flex-grow: 1;">
-                
-                <div style="display: flex; gap: 1rem;">
-                  <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">12:00</div>
-                  <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
-                    <div style="font-size: 0.9rem;">GST updated automatically</div>
-                  </div>
-                </div>
-
-                <div style="display: flex; gap: 1rem;">
-                  <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">11:20</div>
-                  <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
-                    <div style="font-size: 0.9rem;">Reminder sent to ABC Ltd</div>
-                  </div>
-                </div>
-
-                <div style="display: flex; gap: 1rem;">
-                  <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">10:45</div>
-                  <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
-                    <div style="font-size: 0.9rem;">AI categorized electricity expense</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Mapped to Account 5100</div>
-                  </div>
-                </div>
-
-                <div style="display: flex; gap: 1rem;">
-                  <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">09:30</div>
-                  <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
-                    <div style="font-size: 0.9rem; color: var(--emerald-primary);">Customer paid ₹12,000</div>
-                  </div>
-                </div>
-                
-                <div style="display: flex; gap: 1rem;">
-                  <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">09:10</div>
-                  <div style="border-left: 2px solid var(--border-color); padding-left: 1rem;">
-                    <div style="font-size: 0.9rem;">AI created invoice #1002</div>
-                  </div>
-                </div>
-
+              <div id="ai-timeline-container" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; flex-grow: 1;">
               </div>
             </div>
 
@@ -291,7 +314,9 @@
                   </tr>
                 </thead>
                 <tbody id="ledger-table-body">
-                  <tr><td colspan="5">Loading ledger entries...</td></tr>
+                  <tr>
+                    <td colspan="5">Loading ledger entries...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -300,43 +325,45 @@
 
         <!-- ================= VIEW: REPORTS ================= -->
         <section id="view-reports" class="view-section">
-          <div class="glass-panel">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-chart-bar"></i> Profit & Loss (Draft)</div>
+            <div class="card" style="padding: 2rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                  <h3>Profit & Loss Statement</h3>
+                  <button class="btn btn-primary" onclick="loadReports()"><i class="fas fa-sync"></i> Refresh</button>
+              </div>
+              
+              <div id="pnl-container">
+                  <div style="text-align: center; color: var(--text-muted);">Click Refresh to load financial reports.</div>
+              </div>
             </div>
-            <div style="text-align: center; padding: 4rem; color: var(--text-muted);">
-              <i class="fas fa-hammer" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-purple);"></i>
-              <h3>Reports Module Coming Soon</h3>
-              <p>The reporting engine is being built to automatically generate P&L and Balance Sheets from your ledger.</p>
-            </div>
-          </div>
         </section>
 
-    <section id="view-sales" class="view-section" style="display: none;">
-      <div class="content-header">
-        <h2>Sales Invoices</h2>
-        <button class="btn btn-primary" onclick="document.getElementById('input-prompt').focus()">
-          <i class="fas fa-magic"></i> AI Generate
-        </button>
-      </div>
-      <div class="card">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Invoice #</th>
-              <th>Customer</th>
-              <th>Description</th>
-              <th style="text-align: right;">Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="sales-table-body">
-            <tr><td colspan="6" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <section id="view-sales" class="view-section" style="display: none;">
+          <div class="content-header">
+            <h2>Sales Invoices</h2>
+            <button class="btn btn-primary" onclick="document.getElementById('input-prompt').focus()">
+              <i class="fas fa-magic"></i> AI Generate
+            </button>
+          </div>
+          <div class="card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Invoice #</th>
+                  <th>Customer</th>
+                  <th>Description</th>
+                  <th style="text-align: right;">Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body">
+                <tr>
+                  <td colspan="6" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
         <!-- ================= VIEW: INVOICING ================= -->
         <section id="view-invoicing" class="view-section">
@@ -344,347 +371,421 @@
             <div class="header-title"><i class="fas fa-file-invoice-dollar"></i> Sales & Invoicing</div>
 
 
-    <!-- Modal: Create Invoice -->
-    <div id="modal-create-invoice" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">Create Sales Invoice</div>
-          <button class="modal-close" onclick="document.getElementById('modal-create-invoice').style.display='none'">&times;</button>
-        </div>
-        <form id="form-create-invoice" onsubmit="event.preventDefault(); createInvoice();">
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Customer Name</label>
-            <input type="text" id="inv-customer" class="form-control" required>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Description</label>
-            <input type="text" id="inv-desc" class="form-control" placeholder="e.g. Consulting Services">
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount (₹)</label>
-            <input type="number" step="0.01" id="inv-amount" class="form-control" required>
-          </div>
-          <div style="text-align: right; margin-top: 1.5rem;">
-            <button type="submit" class="btn btn-primary">Save Invoice</button>
-          </div>
-        </form>
-      </div>
-    </div>
+            <!-- Modal: Create Invoice -->
+            <div id="modal-create-invoice" class="modal-overlay">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="modal-title">Create Sales Invoice</div>
+                  <button class="modal-close"
+                    onclick="document.getElementById('modal-create-invoice').style.display='none'">&times;</button>
+                </div>
+                <form id="form-create-invoice" onsubmit="event.preventDefault(); createInvoice();">
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Customer
+                      Name</label>
+                    <input type="text" id="inv-customer" class="form-control" required>
+                  </div>
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Description</label>
+                    <input type="text" id="inv-desc" class="form-control" placeholder="e.g. Consulting Services">
+                  </div>
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount (₹)</label>
+                    <input type="number" step="0.01" id="inv-amount" class="form-control" required>
+                  </div>
+                  <div style="text-align: right; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Save Invoice</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
-    <!-- Modal: Record Payment -->
-    <div id="modal-record-payment" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">Record Payment</div>
-          <button class="modal-close" onclick="document.getElementById('modal-record-payment').style.display='none'">&times;</button>
-        </div>
-        <form id="form-record-payment" onsubmit="event.preventDefault(); recordPayment();">
-          <input type="hidden" id="pay-invoice-id">
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount (₹)</label>
-            <input type="number" step="0.01" id="pay-amount" class="form-control" required>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Date</label>
-            <input type="date" id="pay-date" class="form-control" required>
-          </div>
-          <div style="text-align: right; margin-top: 1.5rem;">
-            <button type="submit" class="btn btn-primary">Record Payment</button>
-          </div>
-        </form>
-      </div>
-    </div>
-            <button class="btn btn-primary" onclick="document.getElementById('modal-create-invoice').style.display='flex'">
+            <!-- Modal: Record Payment -->
+            <div id="modal-record-payment" class="modal-overlay">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="modal-title">Record Payment</div>
+                  <button class="modal-close"
+                    onclick="document.getElementById('modal-record-payment').style.display='none'">&times;</button>
+                </div>
+                <form id="form-record-payment" onsubmit="event.preventDefault(); recordPayment();">
+                  <input type="hidden" id="pay-invoice-id">
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Amount (₹)</label>
+                    <input type="number" step="0.01" id="pay-amount" class="form-control" required>
+                  </div>
+                  <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Date</label>
+                    <input type="date" id="pay-date" class="form-control" required>
+                  </div>
+                  <div style="text-align: right; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Record Payment</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <button class="btn btn-primary"
+              onclick="document.getElementById('modal-create-invoice').style.display='flex'">
               <i class="fas fa-plus"></i> Create Invoice
             </button>
           </div>
           <div class="glass-panel" style="margin-top: 1.5rem;">
             <table class="data-table">
-        <section id="view-invoicing" class="view-section" style="display: none;">
-          <div class="card" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-color);">Sales & Invoicing</h2>
-              <p style="color: var(--text-muted);">Manage customers, create invoices, and record payments.</p>
-            </div>
-            <button class="btn btn-primary" onclick="alert('Manual invoice creation coming soon. Try asking the AI CFO to create one!')"><i class="fas fa-plus"></i> New Invoice</button>
-          </div>
-
-          <div class="card" style="overflow-x: auto;">
-            <table class="data-table" style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Date</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Customer</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Invoice #</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Amount</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Status</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="invoice-table-body">
-                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading invoices...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- PURCHASES VIEW -->
-        <section id="view-purchases" class="view-section" style="display: none;">
-          <div class="card" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-color);">Purchases & Bills</h2>
-              <p style="color: var(--text-muted);">Manage suppliers, track bills, and record payments.</p>
-            </div>
-            <button class="btn btn-primary" onclick="alert('Manual bill creation coming soon. Try asking the AI CFO to log an expense!')"><i class="fas fa-plus"></i> Add Bill</button>
-          </div>
-
-          <div class="card" style="overflow-x: auto;">
-            <table class="data-table" style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Date</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Supplier</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Bill #</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Amount</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Status</th>
-                  <th style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">Action</th>
-                </tr>
-              </thead>
-              <tbody id="purchases-table-body">
-                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading bills...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- ================= VIEW: BUSINESS ADMIN ================= -->
-        <section id="view-business-admin" class="view-section">
-          <div class="glass-panel">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-building"></i> Master Data (Acme Corp)</div>
-              <button class="btn btn-primary" onclick="openModal('vendor-modal')">
-                <i class="fas fa-plus"></i> Create Vendor
-              </button>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-              <div class="table-container">
-                <h3>Chart of Accounts</h3>
-                <table class="data-table">
-                  <thead>
-                    <tr>
-                      <th>Code</th>
-                      <th>Account Name</th>
-                      <th>Type</th>
-                    </tr>
-                  </thead>
-                  <tbody id="accounts-table-body">
-                    <tr><td colspan="3">Loading...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div class="table-container">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                  <h3 style="margin: 0;">Suppliers</h3>
+              <section id="view-invoicing" class="view-section" style="display: none;">
+                <div class="card"
+                  style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-color);">Sales & Invoicing
+                    </h2>
+                    <p style="color: var(--text-muted);">Manage customers, create invoices, and record payments.</p>
+                  </div>
+                  <button class="btn btn-primary"
+                    onclick="alert('Manual invoice creation coming soon. Try asking the AI CFO to create one!')"><i
+                      class="fas fa-plus"></i> New Invoice</button>
                 </div>
-                <table class="data-table">
-                  <thead>
-                    <tr>
-                      <th>Vendor Name</th>
-                      <th>GSTIN</th>
-                    </tr>
-                  </thead>
-                  <tbody id="vendor-table-body">
-                    <tr><td colspan="2">Loading...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+
+                <div class="card" style="overflow-x: auto;">
+                  <table class="data-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Date</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Customer</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Invoice #</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Amount</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Status</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="invoice-table-body">
+                      <tr>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading invoices...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- PURCHASES VIEW -->
+              <section id="view-purchases" class="view-section" style="display: none;">
+                <div class="card"
+                  style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-color);">Purchases & Bills
+                    </h2>
+                    <p style="color: var(--text-muted);">Manage suppliers, track bills, and record payments.</p>
+                  </div>
+                  <button class="btn btn-primary"
+                    onclick="alert('Manual bill creation coming soon. Try asking the AI CFO to log an expense!')"><i
+                      class="fas fa-plus"></i> Add Bill</button>
+                </div>
+
+                <div class="card" style="overflow-x: auto;">
+                  <table class="data-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Date</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Supplier</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Bill #</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Amount</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Status</th>
+                        <th
+                          style="text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 500;">
+                          Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="purchases-table-body">
+                      <tr>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading bills...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- ================= VIEW: BUSINESS ADMIN ================= -->
+              <section id="view-business-admin" class="view-section">
+                <div class="glass-panel">
+                  <div class="panel-header">
+                    <div class="header-title"><i class="fas fa-building"></i> Master Data (Acme Corp)</div>
+                    <button class="btn btn-primary" onclick="openModal('vendor-modal')">
+                      <i class="fas fa-plus"></i> Create Vendor
+                    </button>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="table-container">
+                      <h3>Chart of Accounts</h3>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>Code</th>
+                            <th>Account Name</th>
+                            <th>Type</th>
+                          </tr>
+                        </thead>
+                        <tbody id="accounts-table-body">
+                          <tr>
+                            <td colspan="3">Loading...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="table-container">
+                      <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0;">Suppliers</h3>
+                      </div>
+                      <table class="data-table">
+                        <thead>
+                          <tr>
+                            <th>Vendor Name</th>
+                            <th>GSTIN</th>
+                          </tr>
+                        </thead>
+                        <tbody id="vendor-table-body">
+                          <tr>
+                            <td colspan="2">Loading...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ================= VIEW: TENANT TAX & COMPLIANCE ================= -->
+              <section id="view-tenant-tax" class="view-section">
+                <div class="glass-panel">
+                  <div class="panel-header">
+                    <div class="header-title"><i class="fas fa-percent"></i> Tax & Compliance Configuration</div>
+                    <button class="btn btn-primary" onclick="saveTenantTaxSettings()">
+                      <i class="fas fa-save"></i> Save Settings
+                    </button>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                    <div class="form-group">
+                      <label>Tax Registered?</label>
+                      <select id="tenant-tax-registered" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Tax ID Number (GSTIN/VAT)</label>
+                      <input type="text" id="tenant-tax-id" class="form-control" placeholder="e.g. 22AAAAA0000A1Z5">
+                    </div>
+                    <div class="form-group">
+                      <label>Home State (For Place of Supply)</label>
+                      <input type="text" id="tenant-home-state" class="form-control" placeholder="e.g. Maharashtra">
+                    </div>
+                    <div class="form-group">
+                      <label>Default Sales Tax Code</label>
+                      <select id="tenant-default-tax" class="form-control">
+                        <option value="">None</option>
+                        <!-- Will be populated from Global Rules -->
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Are Prices Tax Inclusive by Default?</label>
+                      <select id="tenant-tax-inclusive" class="form-control">
+                        <option value="0">No (Exclusive)</option>
+                        <option value="1">Yes (Inclusive)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ================= VIEW 3: SUPER ADMIN ================= -->
+              <section id="view-super-admin" class="view-section">
+                <div class="glass-panel">
+                  <div class="panel-header">
+                    <div class="header-title"><i class="fas fa-crown" style="color: var(--accent-purple)"></i> Super
+                      Admin - Tenants</div>
+                    <button class="btn btn-primary" onclick="openModal('tenant-modal')"
+                      style="background: var(--accent-purple)">
+                      <i class="fas fa-plus"></i> Register Business
+                    </button>
+                  </div>
+
+                  <div class="table-container">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Business Name</th>
+                          <th>Primary Owner</th>
+                          <th>PAN</th>
+                          <th>Users</th>
+                          <th>Add-on Modules</th>
+                          <th>Status & Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tenant-table-body">
+                        <tr>
+                          <td style="font-family:monospace; color:var(--text-muted)">tenant-123</td>
+                          <td><strong>Acme Corp</strong></td>
+                          <td>ABCDE1234F</td>
+                          <td>4</td>
+                          <td><span class="badge badge-success">Active</span></td>
+                        </tr>
+                        <tr>
+                          <td style="font-family:monospace; color:var(--text-muted)">tenant-456</td>
+                          <td><strong>Global Tech Solutions</strong></td>
+                          <td>XYZDE9876G</td>
+                          <td>12</td>
+                          <td><span class="badge badge-purple">Onboarding</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="glass-panel" style="margin-top: 2rem;">
+                  <div class="panel-header">
+                    <div class="header-title"><i class="fas fa-brain" style="color: var(--accent-purple)"></i> AI Engine
+                      Configuration</div>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                      Dynamically switch between AI Providers for the Virtual CFO Hub.
+                    </p>
+
+                    <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                      <span style="font-size: 0.9rem; font-weight: 500;" id="ai-status-text">AI is Active</span>
+                      <div style="position: relative;">
+                        <input type="checkbox" id="ai-enabled-toggle"
+                          style="appearance: none; width: 44px; height: 24px; background: rgba(0,0,0,0.3); border-radius: 12px; outline: none; border: 1px solid var(--border-glass); cursor: pointer; transition: 0.3s; vertical-align: middle;">
+                        <div id="ai-toggle-knob"
+                          style="position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--text-muted); border-radius: 50%; transition: 0.3s; pointer-events: none;">
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div id="ai-config-fields" style="transition: opacity 0.3s;">
+
+                    <!-- OpenAI Option -->
+                    <div
+                      style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1.5rem;">
+                      <div style="padding-top: 0.5rem;">
+                        <input type="radio" name="active_provider" value="openai" id="provider-openai"
+                          style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
+                      </div>
+                      <div style="flex: 1;">
+                        <label for="provider-openai"
+                          style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.5rem;">OpenAI
+                          (gpt-4o)</label>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Industry-leading
+                          accuracy for financial parsing.</p>
+                        <input type="password" id="openai-api-key" class="form-control" placeholder="sk-proj-..."
+                          style="font-size: 1rem;" autocomplete="new-password">
+                      </div>
+                    </div>
+
+                    <!-- Gemini Option -->
+                    <div
+                      style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1.5rem;">
+                      <div style="padding-top: 0.5rem;">
+                        <input type="radio" name="active_provider" value="gemini" id="provider-gemini"
+                          style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
+                      </div>
+                      <div style="flex: 1;">
+                        <label for="provider-gemini"
+                          style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.5rem;">Google
+                          Gemini (gemini-1.5-flash)</label>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Fast,
+                          cost-effective, and highly capable structure extraction.</p>
+                        <input type="password" id="gemini-api-key" class="form-control" placeholder="AIzaSy..."
+                          style="font-size: 1rem;" autocomplete="new-password">
+                      </div>
+                    </div>
+
+                    <!-- Mock Option -->
+                    <div
+                      style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 1.5rem;">
+                      <div>
+                        <input type="radio" name="active_provider" value="mock" id="provider-mock"
+                          style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
+                      </div>
+                      <div>
+                        <label for="provider-mock"
+                          style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.25rem;">Mock
+                          Engine (Smart Regex)</label>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Local parser for offline
+                          testing. No API key required.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button id="btn-save-ai" class="btn btn-primary" onclick="saveAIConfig()"
+                    style="background: var(--accent-purple); padding: 0.75rem 1.5rem; margin-top: 1.5rem;">
+                    <i class="fas fa-save"></i> Save Configuration
+                  </button>
+                </div>
+                <div class="glass-panel" style="margin-top: 2rem;">
+                  <div class="panel-header">
+                    <div class="header-title"><i class="fas fa-globe" style="color: var(--accent-purple)"></i> Global
+                      Tax Engine (Level 1)</div>
+                    <button class="btn btn-primary" onclick="alert('Open Tax Rule Modal (Coming Soon)')"
+                      style="background: var(--accent-purple)">
+                      <i class="fas fa-plus"></i> Add Tax Rule
+                    </button>
+                  </div>
+                  <div class="table-container" style="margin-top: 1.5rem;">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Tax Code</th>
+                          <th>Country</th>
+                          <th>Regime</th>
+                          <th>Components (JSON)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="global-tax-table-body">
+                        <tr>
+                          <td colspan="4">Loading global tax rules...</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </section>
+
           </div>
-        </section>
-
-        <!-- ================= VIEW: TENANT TAX & COMPLIANCE ================= -->
-        <section id="view-tenant-tax" class="view-section">
-          <div class="glass-panel">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-percent"></i> Tax & Compliance Configuration</div>
-              <button class="btn btn-primary" onclick="saveTenantTaxSettings()">
-                <i class="fas fa-save"></i> Save Settings
-              </button>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
-              <div class="form-group">
-                <label>Tax Registered?</label>
-                <select id="tenant-tax-registered" class="form-control">
-                  <option value="0">No</option>
-                  <option value="1">Yes</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Tax ID Number (GSTIN/VAT)</label>
-                <input type="text" id="tenant-tax-id" class="form-control" placeholder="e.g. 22AAAAA0000A1Z5">
-              </div>
-              <div class="form-group">
-                <label>Home State (For Place of Supply)</label>
-                <input type="text" id="tenant-home-state" class="form-control" placeholder="e.g. Maharashtra">
-              </div>
-              <div class="form-group">
-                <label>Default Sales Tax Code</label>
-                <select id="tenant-default-tax" class="form-control">
-                  <option value="">None</option>
-                  <!-- Will be populated from Global Rules -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Are Prices Tax Inclusive by Default?</label>
-                <select id="tenant-tax-inclusive" class="form-control">
-                  <option value="0">No (Exclusive)</option>
-                  <option value="1">Yes (Inclusive)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ================= VIEW 3: SUPER ADMIN ================= -->
-        <section id="view-super-admin" class="view-section">
-          <div class="glass-panel">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-crown" style="color: var(--accent-purple)"></i> Super Admin - Tenants</div>
-              <button class="btn btn-primary" onclick="openModal('tenant-modal')" style="background: var(--accent-purple)">
-                <i class="fas fa-plus"></i> Register Business
-              </button>
-            </div>
-            
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Business Name</th>
-                    <th>Primary Owner</th>
-                    <th>PAN</th>
-                    <th>Users</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="tenant-table-body">
-                  <tr>
-                    <td style="font-family:monospace; color:var(--text-muted)">tenant-123</td>
-                    <td><strong>Acme Corp</strong></td>
-                    <td>ABCDE1234F</td>
-                    <td>4</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-family:monospace; color:var(--text-muted)">tenant-456</td>
-                    <td><strong>Global Tech Solutions</strong></td>
-                    <td>XYZDE9876G</td>
-                    <td>12</td>
-                    <td><span class="badge badge-purple">Onboarding</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="glass-panel" style="margin-top: 2rem;">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-brain" style="color: var(--accent-purple)"></i> AI Engine Configuration</div>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
-                Dynamically switch between AI Providers for the Virtual CFO Hub.
-              </p>
-              
-              <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                <span style="font-size: 0.9rem; font-weight: 500;" id="ai-status-text">AI is Active</span>
-                <div style="position: relative;">
-                  <input type="checkbox" id="ai-enabled-toggle" style="appearance: none; width: 44px; height: 24px; background: rgba(0,0,0,0.3); border-radius: 12px; outline: none; border: 1px solid var(--border-glass); cursor: pointer; transition: 0.3s; vertical-align: middle;">
-                  <div id="ai-toggle-knob" style="position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--text-muted); border-radius: 50%; transition: 0.3s; pointer-events: none;"></div>
-                </div>
-              </label>
-            </div>
-            
-            <div id="ai-config-fields" style="transition: opacity 0.3s;">
-              
-              <!-- OpenAI Option -->
-              <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1.5rem;">
-                <div style="padding-top: 0.5rem;">
-                  <input type="radio" name="active_provider" value="openai" id="provider-openai" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
-                </div>
-                <div style="flex: 1;">
-                  <label for="provider-openai" style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.5rem;">OpenAI (gpt-4o)</label>
-                  <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Industry-leading accuracy for financial parsing.</p>
-                  <input type="password" id="openai-api-key" class="form-control" placeholder="sk-proj-..." style="font-size: 1rem;" autocomplete="new-password">
-                </div>
-              </div>
-
-              <!-- Gemini Option -->
-              <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1.5rem;">
-                <div style="padding-top: 0.5rem;">
-                  <input type="radio" name="active_provider" value="gemini" id="provider-gemini" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
-                </div>
-                <div style="flex: 1;">
-                  <label for="provider-gemini" style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.5rem;">Google Gemini (gemini-1.5-flash)</label>
-                  <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Fast, cost-effective, and highly capable structure extraction.</p>
-                  <input type="password" id="gemini-api-key" class="form-control" placeholder="AIzaSy..." style="font-size: 1rem;" autocomplete="new-password">
-                </div>
-              </div>
-
-              <!-- Mock Option -->
-              <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-glass); display: flex; align-items: center; gap: 1.5rem;">
-                <div>
-                  <input type="radio" name="active_provider" value="mock" id="provider-mock" style="width: 20px; height: 20px; cursor: pointer; accent-color: var(--emerald-primary);">
-                </div>
-                <div>
-                  <label for="provider-mock" style="font-weight: 600; font-size: 1.1rem; color: white; display: block; cursor: pointer; margin-bottom: 0.25rem;">Mock Engine (Smart Regex)</label>
-                  <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Local parser for offline testing. No API key required.</p>
-                </div>
-              </div>
-            </div>
-            
-            <button id="btn-save-ai" class="btn btn-primary" onclick="saveAIConfig()" style="background: var(--accent-purple); padding: 0.75rem 1.5rem; margin-top: 1.5rem;">
-              <i class="fas fa-save"></i> Save Configuration
-            </button>
-          </div>
-          <div class="glass-panel" style="margin-top: 2rem;">
-            <div class="panel-header">
-              <div class="header-title"><i class="fas fa-globe" style="color: var(--accent-purple)"></i> Global Tax Engine (Level 1)</div>
-              <button class="btn btn-primary" onclick="alert('Open Tax Rule Modal (Coming Soon)')" style="background: var(--accent-purple)">
-                <i class="fas fa-plus"></i> Add Tax Rule
-              </button>
-            </div>
-            <div class="table-container" style="margin-top: 1.5rem;">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Tax Code</th>
-                    <th>Country</th>
-                    <th>Regime</th>
-                    <th>Components (JSON)</th>
-                  </tr>
-                </thead>
-                <tbody id="global-tax-table-body">
-                  <tr><td colspan="4">Loading global tax rules...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </section>
-
-      </div>
     </main>
   </div>
 
   <!-- ================= MODALS ================= -->
-  
+
   <!-- Create Vendor Modal -->
   <div class="modal-overlay" id="vendor-modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('vendor-modal')"><i class="fas fa-times"></i></button>
       <h3 style="font-family:var(--font-heading); margin-bottom:1.5rem;">Create New Vendor</h3>
-      
+
       <form id="vendor-form" onsubmit="handleVendorSubmit(event)">
         <div class="form-group">
           <label class="form-label">Vendor Name *</label>
@@ -707,7 +808,8 @@
             <option value="Consulting Fees">Consulting Fees</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:1rem;">Save Vendor</button>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:1rem;">Save
+          Vendor</button>
       </form>
     </div>
   </div>
@@ -716,8 +818,9 @@
   <div class="modal-overlay" id="tenant-modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('tenant-modal')"><i class="fas fa-times"></i></button>
-      <h3 style="font-family:var(--font-heading); margin-bottom:1.5rem; color:var(--accent-purple);">Register New Business</h3>
-      
+      <h3 style="font-family:var(--font-heading); margin-bottom:1.5rem; color:var(--accent-purple);">Register New
+        Business</h3>
+
       <form id="tenant-form" onsubmit="handleTenantSubmit(event)">
         <div class="form-group">
           <label class="form-label">Legal Business Name *</label>
@@ -730,11 +833,14 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
             <label class="form-label">PAN Number</label>
-            <input type="text" id="t-pan" class="form-control" placeholder="ABCDE1234F" pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" title="Format: 5 letters, 4 numbers, 1 letter">
+            <input type="text" id="t-pan" class="form-control" placeholder="ABCDE1234F"
+              pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" title="Format: 5 letters, 4 numbers, 1 letter">
           </div>
           <div class="form-group">
             <label class="form-label">GSTIN</label>
-            <input type="text" id="t-gstin" class="form-control" placeholder="27ABCDE1234F1Z5" pattern="[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}Z[0-9a-zA-Z]{1}" title="Format: Valid Indian GSTIN">
+            <input type="text" id="t-gstin" class="form-control" placeholder="27ABCDE1234F1Z5"
+              pattern="[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}Z[0-9a-zA-Z]{1}"
+              title="Format: Valid Indian GSTIN">
           </div>
         </div>
         <div class="form-group">
@@ -773,55 +879,68 @@
           <label class="form-label">Financial Year Start</label>
           <input type="date" id="t-fy" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary" style="background:var(--accent-purple); width:100%; justify-content:center; margin-top:1rem;">Provision Tenant Database</button>
+        <div class="form-group" style="margin-top: 1rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-glass);">
+          <label class="form-label" style="color: var(--accent-purple); font-weight: 600;">Enable Modules & Add-ons</label>
+          <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="checkbox" checked disabled> Core Accounting (Included)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="checkbox" id="t-mod-inventory" checked> Inventory Add-on (₹1,500/mo)
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+          style="background:var(--accent-purple); width:100%; justify-content:center; margin-top:1rem;">Provision Tenant
+          Database</button>
       </form>
     </div>
   </div>
 
   <!-- Global Floating Actions -->
-  <div class="floating-actions" style="position: fixed; bottom: 2rem; right: 2rem; display: flex; flex-direction: column; gap: 1rem; z-index: 100;">
-    <button class="btn" style="width: 50px; height: 50px; border-radius: 25px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer;" onclick="alert('Camera integration coming soon')">
+  <div class="floating-actions"
+    style="position: fixed; bottom: 2rem; right: 2rem; display: flex; flex-direction: column; gap: 1rem; z-index: 100;">
+    <button class="btn"
+      style="width: 50px; height: 50px; border-radius: 25px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer;"
+      onclick="alert('Camera integration coming soon')">
       <i class="fas fa-camera" style="font-size: 1.2rem;"></i>
     </button>
-    <button id="btn-global-mic" class="btn btn-primary" style="width: 60px; height: 60px; border-radius: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,255,170,0.4); cursor: pointer; transition: all 0.3s;" onclick="toggleVoiceRecording()">
+    <button id="btn-global-mic" class="btn btn-primary"
+      style="width: 60px; height: 60px; border-radius: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,255,170,0.4); cursor: pointer; transition: all 0.3s;"
+      onclick="toggleVoiceRecording()">
       <i class="fas fa-microphone" style="font-size: 1.5rem;"></i>
     </button>
   </div>
 
   <!-- JavaScript Logic -->
-    <!-- Modal: Create Tenant -->
-    <div id="modal-create-tenant" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">Provision New Business</div>
-          <button class="modal-close" onclick="document.getElementById('modal-create-tenant').style.display='none'">&times;</button>
-        </div>
-        <form id="form-create-tenant" onsubmit="event.preventDefault(); registerBusiness();">
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Business Name</label>
-            <input type="text" id="tenant-name" class="form-control" required>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Owner Email</label>
-            <input type="email" id="tenant-email" class="form-control" required>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Initial Password</label>
-            <input type="password" id="tenant-password" class="form-control" required autocomplete="new-password">
-          </div>
-          <div style="text-align: right; margin-top: 1.5rem;">
-            <button type="submit" class="btn btn-primary">Provision Business</button>
-          </div>
-        </form>
+  <!-- Modal: Create Tenant -->
+  <div id="modal-create-tenant" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Provision New Business</div>
+        <button class="modal-close"
+          onclick="document.getElementById('modal-create-tenant').style.display='none'">&times;</button>
       </div>
+      <form id="form-create-tenant" onsubmit="event.preventDefault(); registerBusiness();">
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Business Name</label>
+          <input type="text" id="tenant-name" class="form-control" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Owner Email</label>
+          <input type="email" id="tenant-email" class="form-control" required>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Initial Password</label>
+          <input type="password" id="tenant-password" class="form-control" required autocomplete="new-password">
+        </div>
+        <div style="text-align: right; margin-top: 1.5rem;">
+          <button type="submit" class="btn btn-primary">Provision Business</button>
+        </div>
+      </form>
     </div>
+  </div>
   <script>
-
-    // API Configuration
-    const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const LARAVEL_API_URL = IS_LOCAL ? LARAVEL_API_URL + '' : 'https://api.yourdomain.com/api';
-    const PYTHON_API_URL = IS_LOCAL ? PYTHON_API_URL + '' : 'https://ai.yourdomain.com/internal/v1';
-
     // --- Auth Logic ---
     let authToken = localStorage.getItem('auth_token');
     let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
@@ -842,22 +961,22 @@
       errorBox.style.display = 'none';
 
       try {
-        const response = await fetch(LARAVEL_API_URL + '/login', {
+        const response = await fetch('http://127.0.0.1:8001/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
 
         if (!response.ok) throw new Error('Invalid credentials');
-        
+
         const data = await response.json();
-        
+
         // Save to storage
         authToken = data.access_token;
         currentUser = data.user;
         localStorage.setItem('auth_token', authToken);
         localStorage.setItem('current_user', JSON.stringify(currentUser));
-        
+
         showMainApp();
       } catch (error) {
         errorBox.style.display = 'block';
@@ -872,29 +991,30 @@
       setTimeout(() => {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'flex';
-        
+
         // Setup UI based on Role
         document.getElementById('user-name-display').innerText = currentUser.name;
-        
+        document.getElementById('sidebar-company-name').textContent = currentUser.tenant_name || '';
+
         if (currentUser.is_super_admin) {
           document.getElementById('user-role-display').innerText = 'Role: Super Admin';
           document.getElementById('user-role-display').style.color = 'var(--accent-purple)';
-          
+
           document.getElementById('nav-item-super').style.display = 'flex';
           document.getElementById('nav-super-header').style.display = 'block';
           // Auto switch to Super Admin View
           switchView('view-super-admin', document.getElementById('nav-item-super'));
-          
+
           // Load AI settings for super admin
           loadAIConfig();
           loadTenants();
         } else {
           document.getElementById('user-role-display').innerText = 'Role: Business Owner';
           document.getElementById('user-role-display').style.color = 'var(--emerald-primary)';
-          
+
           document.getElementById('nav-business-owner').style.display = 'block';
           document.getElementById('nav-item-business').style.display = 'flex';
-          
+
           // Fetch dynamic dashboard data
           loadDashboard();
           loadInvoices();
@@ -911,14 +1031,14 @@
       localStorage.removeItem('current_user');
       authToken = null;
       currentUser = null;
-      
+
       document.getElementById('login-screen').style.display = 'flex';
       document.getElementById('login-screen').classList.remove('hidden');
       document.getElementById('main-app').style.display = 'none';
       document.getElementById('nav-item-super').style.display = 'none';
       document.getElementById('nav-business-owner').style.display = 'none';
       document.getElementById('nav-item-business').style.display = 'none';
-      
+
       document.getElementById('login-screen').classList.remove('hidden');
       document.getElementById('login-form').reset();
     }
@@ -929,7 +1049,7 @@
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       // Show selected view
       document.getElementById(viewId).classList.add('active');
-      
+
       // Update nav highlights
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       navElement.classList.add('active');
@@ -938,36 +1058,40 @@
         loadTenants();
         loadSystemSettings();
       }
-      
+
+      if (viewId === 'view-ai-hub') {
+        loadAITimeline();
+      }
+
       if (viewId === 'view-dashboard') {
-          loadDashboard();
+        loadDashboard();
       }
 
       if (viewId === 'view-sales') {
-          loadSales();
+        loadSales();
       }
 
       if (viewId === 'view-purchases') {
-          loadPurchases();
+        loadPurchases();
       }
 
       if (viewId === 'view-ledger') {
-          loadLedger();
+        loadLedger();
       }
 
       if (viewId === 'view-tenant-tax') {
-          loadTenantTaxSettings();
+        loadTenantTaxSettings();
       }
 
       if (viewId === 'view-super-admin') {
-          loadGlobalTaxRules();
+        loadGlobalTaxRules();
       }
 
       if (viewId === 'view-business-admin') {
         try {
           // Fetch Accounts
-          const accRes = await fetch(LARAVEL_API_URL + '/accounts', {
-            headers: { 
+          const accRes = await fetch('http://127.0.0.1:8001/api/accounts', {
+            headers: {
               'Authorization': 'Bearer ' + authToken,
               'X-Tenant-ID': currentUser.tenant_id
             }
@@ -990,8 +1114,8 @@
           }
 
           // Fetch Suppliers
-          const suppRes = await fetch(LARAVEL_API_URL + '/suppliers', {
-            headers: { 
+          const suppRes = await fetch('http://127.0.0.1:8001/api/suppliers', {
+            headers: {
               'Authorization': 'Bearer ' + authToken,
               'X-Tenant-ID': currentUser.tenant_id
             }
@@ -1018,8 +1142,8 @@
 
       if (viewId === 'view-ledger') {
         try {
-          const ledgerRes = await fetch(LARAVEL_API_URL + '/journal-entries', {
-            headers: { 
+          const ledgerRes = await fetch('http://127.0.0.1:8001/api/journal-entries', {
+            headers: {
               'Authorization': 'Bearer ' + authToken,
               'X-Tenant-ID': currentUser.tenant_id
             }
@@ -1028,7 +1152,7 @@
             const data = await ledgerRes.json();
             const tbody = document.getElementById('ledger-table-body');
             tbody.innerHTML = '';
-            
+
             if (data.data && data.data.length > 0) {
               data.data.forEach(entry => {
                 let html = '';
@@ -1036,13 +1160,13 @@
                   html += `<tr>`;
                   if (index === 0) {
                     html += `<td rowspan="${entry.lines.length}">${entry.entry_date}</td>`;
-                    html += `<td rowspan="${entry.lines.length}"><strong>${entry.narration}</strong><br><small style="color:var(--text-muted)">#${entry.id.substring(0,8)}</small></td>`;
+                    html += `<td rowspan="${entry.lines.length}"><strong>${entry.narration}</strong><br><small style="color:var(--text-muted)">#${entry.id.substring(0, 8)}</small></td>`;
                   }
-                  
+
                   // Indent credit accounts slightly for standard accounting look
                   const isCredit = line.credit_amount > 0;
                   const accNameStyle = isCredit ? 'padding-left: 20px;' : '';
-                  
+
                   html += `
                     <td style="${accNameStyle}">${line.account_name} (${line.account_code})</td>
                     <td style="text-align: right;">${line.debit_amount > 0 ? Number(line.debit_amount).toFixed(2) : ''}</td>
@@ -1064,23 +1188,23 @@
     }
     // --- Data Loaders ---
     async function loadSales() {
-        if (!currentUser || !currentUser.tenant_id) return;
-        try {
-          const res = await fetch(LARAVEL_API_URL + '/invoices', {
-            headers: { 
-              'Authorization': 'Bearer ' + authToken,
-              'X-Tenant-ID': currentUser.tenant_id
-            }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            const tbody = document.getElementById('sales-table-body');
-            tbody.innerHTML = '';
-            
-            if (data.data && data.data.length > 0) {
-              data.data.forEach(inv => {
-                const badgeClass = inv.status === 'Sent' ? 'badge-primary' : 'badge-warning';
-                tbody.innerHTML += `<tr>
+      if (!currentUser || !currentUser.tenant_id) return;
+      try {
+        const res = await fetch('http://127.0.0.1:8001/api/invoices', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const tbody = document.getElementById('sales-table-body');
+          tbody.innerHTML = '';
+
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(inv => {
+              const badgeClass = inv.status === 'Sent' ? 'badge-primary' : 'badge-warning';
+              tbody.innerHTML += `<tr>
                   <td>${inv.issue_date}</td>
                   <td><strong>${inv.invoice_number}</strong></td>
                   <td>${inv.customer ? inv.customer.name : 'Unknown'}</td>
@@ -1088,14 +1212,57 @@
                   <td style="text-align: right; font-weight: bold;">₹${Number(inv.total_amount).toFixed(2)}</td>
                   <td><span class="badge ${badgeClass}">${inv.status}</span></td>
                 </tr>`;
-              });
-            } else {
-              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No invoices generated yet.</td></tr>';
-            }
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No invoices generated yet.</td></tr>';
           }
-        } catch (e) {
-          console.error("Failed to load invoices", e);
         }
+      } catch (e) {
+        console.error("Failed to load invoices", e);
+      }
+    }
+
+    async function loadAITimeline() {
+      if (!currentUser || !currentUser.tenant_id) return;
+      try {
+        const res = await fetch('http://127.0.0.1:8001/api/journal-entries', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const timeline = document.getElementById('ai-timeline-container');
+          timeline.innerHTML = '';
+          
+          if (data.data && data.data.length > 0) {
+            data.data.slice(0, 7).forEach(entry => {
+              const timeStr = entry.created_at ? new Date(entry.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Today';
+              const timelineItem = document.createElement('div');
+              timelineItem.style.display = 'flex';
+              timelineItem.style.gap = '1rem';
+              
+              let totalAmount = 0;
+              if (entry.lines) {
+                  entry.lines.forEach(l => totalAmount += parseFloat(l.debit_amount || 0));
+              }
+              
+              timelineItem.innerHTML = `
+                <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">${timeStr}</div>
+                <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
+                  <div style="font-size: 0.9rem; color: var(--emerald-primary);">AI generated journal entry</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">${entry.narration || 'Recorded transaction'}</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Amount: ₹${totalAmount.toFixed(2)}</div>
+                </div>
+              `;
+              timeline.appendChild(timelineItem);
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load AI timeline", e);
+      }
     }
     // --- Modal Logic ---
     function openModal(id) { document.getElementById(id).classList.add('active'); }
@@ -1108,7 +1275,7 @@
       const gst = document.getElementById('v-gst').value || 'N/A';
       const contact = document.getElementById('v-contact').value || 'N/A';
       const category = document.getElementById('v-category').value;
-      
+
       const tbody = document.getElementById('vendor-table-body');
       tbody.innerHTML += `
         <tr>
@@ -1128,7 +1295,7 @@
       const name = document.getElementById('t-name').value;
       const pan = document.getElementById('t-pan').value;
       const email = document.getElementById('t-email').value;
-      
+
       const gstin = document.getElementById('t-gstin').value;
       const address = document.getElementById('t-address').value;
       const state = document.getElementById('t-state').value;
@@ -1136,6 +1303,11 @@
       const phone = document.getElementById('t-phone').value;
       const industry = document.getElementById('t-industry').value;
       const fy = document.getElementById('t-fy').value;
+      const invCheck = document.getElementById('t-mod-inventory');
+      const modules = ['core_accounting'];
+      if (invCheck && invCheck.checked) {
+        modules.push('inventory');
+      }
 
       const btn = e.target.querySelector('button[type="submit"]');
       const originalText = btn.innerHTML;
@@ -1143,15 +1315,15 @@
       btn.disabled = true;
 
       try {
-        const response = await fetch(LARAVEL_API_URL + '/tenants', {
+        const response = await fetch('http://127.0.0.1:8001/api/tenants', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken
           },
-          body: JSON.stringify({ 
-            business_name: name, 
-            pan: pan, 
+          body: JSON.stringify({
+            business_name: name,
+            pan: pan,
             email: email,
             gstin: gstin,
             address: address,
@@ -1159,7 +1331,8 @@
             city: city,
             phone: phone,
             industry: industry,
-            financial_year_start: fy
+            financial_year_start: fy,
+            enabled_modules: modules
           })
         });
 
@@ -1179,7 +1352,7 @@
         const tbody = document.getElementById('tenant-table-body');
         tbody.innerHTML += `
           <tr>
-            <td style="font-family:monospace; color:var(--text-muted)">${tenant.id.substring(0,8)}...</td>
+            <td style="font-family:monospace; color:var(--text-muted)">${tenant.id.substring(0, 8)}...</td>
             <td><strong>${tenant.business_name}</strong></td>
             <td>${tenant.pan || 'N/A'}</td>
             <td>1 (Owner: ${email})</td>
@@ -1208,9 +1381,9 @@
       const stateSelect = document.getElementById('t-state');
       const citySelect = document.getElementById('t-city');
       const selectedState = stateSelect.value;
-      
+
       citySelect.innerHTML = '<option value="">Select City</option>';
-      
+
       if (selectedState && cityData[selectedState]) {
         cityData[selectedState].forEach(city => {
           const option = document.createElement('option');
@@ -1224,8 +1397,8 @@
     // --- AI Voice Hub Logic ---
     const inputField = document.getElementById('ai-input');
     const outputField = document.getElementById('json-output');
-    
-    inputField.addEventListener("keypress", function(event) {
+
+    inputField.addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
         sendToAI();
@@ -1242,92 +1415,116 @@
     let isRecording = false;
 
     async function toggleVoiceRecording() {
-        // Switch to AI Hub first
-        if(document.getElementById('nav-ai-hub')) { 
-            switchView('view-ai-hub', document.getElementById('nav-ai-hub')); 
-        }
+      // Switch to AI Hub first
+      if (document.getElementById('nav-ai-hub')) {
+        switchView('view-ai-hub', document.getElementById('nav-ai-hub'));
+      }
 
-        const micBtn = document.getElementById('btn-global-mic');
+      const micBtn = document.getElementById('btn-global-mic');
 
-        if (isRecording) {
-            // Stop recording
-            mediaRecorder.stop();
-            isRecording = false;
-            micBtn.style.background = 'var(--emerald-primary)';
-            micBtn.style.boxShadow = '0 4px 15px rgba(0,255,170,0.4)';
-            micBtn.innerHTML = '<i class="fas fa-microphone" style="font-size: 1.5rem;"></i>';
-            outputField.innerHTML = '<span style="opacity:0.5">Processing voice input...</span>';
-            return;
-        }
+      if (isRecording) {
+        // Stop recording
+        mediaRecorder.stop();
+        isRecording = false;
+        micBtn.style.background = 'var(--emerald-primary)';
+        micBtn.style.boxShadow = '0 4px 15px rgba(0,255,170,0.4)';
+        micBtn.innerHTML = '<i class="fas fa-microphone" style="font-size: 1.5rem;"></i>';
+        outputField.innerHTML = '<span style="opacity:0.5">Processing voice input...</span>';
+        return;
+      }
 
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
 
-            mediaRecorder.ondataavailable = event => {
-                audioChunks.push(event.data);
-            };
+        mediaRecorder.ondataavailable = event => {
+          audioChunks.push(event.data);
+        };
 
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                
-                // Convert blob to base64
-                const reader = new FileReader();
-                reader.readAsDataURL(audioBlob);
-                reader.onloadend = async () => {
-                    const base64Audio = reader.result.split(',')[1];
-                    await sendAudioToAI(base64Audio);
-                };
-            };
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
 
-            mediaRecorder.start();
-            isRecording = true;
-            micBtn.style.background = 'var(--danger)';
-            micBtn.style.boxShadow = '0 0 20px var(--danger)';
-            micBtn.innerHTML = '<i class="fas fa-stop" style="font-size: 1.5rem;"></i>';
-            outputField.innerHTML = '<span style="color: var(--danger);"><i class="fas fa-circle" style="font-size: 0.6rem; vertical-align: middle; margin-right: 5px; animation: pulse 1s infinite;"></i> Recording... click stop when finished</span>';
-            
-        } catch (err) {
-            console.error('Error accessing microphone:', err);
-            outputField.innerHTML = `<span style="color: #ef4444">Error accessing microphone: ${err.message}. Please allow microphone permissions.</span>`;
-        }
+          // Convert blob to base64
+          const reader = new FileReader();
+          reader.readAsDataURL(audioBlob);
+          reader.onloadend = async () => {
+            const base64Audio = reader.result.split(',')[1];
+            await sendAudioToAI(base64Audio);
+          };
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        micBtn.style.background = 'var(--danger)';
+        micBtn.style.boxShadow = '0 0 20px var(--danger)';
+        micBtn.innerHTML = '<i class="fas fa-stop" style="font-size: 1.5rem;"></i>';
+        outputField.innerHTML = '<span style="color: var(--danger);"><i class="fas fa-circle" style="font-size: 0.6rem; vertical-align: middle; margin-right: 5px; animation: pulse 1s infinite;"></i> Recording... click stop when finished</span>';
+
+      } catch (err) {
+        console.error('Error accessing microphone:', err);
+        outputField.innerHTML = `<span style="color: #ef4444">Error accessing microphone: ${err.message}. Please allow microphone permissions.</span>`;
+      }
     }
 
     async function sendAudioToAI(base64Audio) {
       try {
-        const response = await fetch(PYTHON_API_URL + '/extract/transaction', {
+        const response = await fetch('http://127.0.0.1:8000/internal/v1/extract/transaction', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken,
-            'X-Tenant-ID': currentUser.tenant_id || 'test-tenant' 
+            'X-Tenant-ID': currentUser.tenant_id || 'test-tenant'
           },
-          body: JSON.stringify({ 
-              input_type: 'audio', 
-              audio_base64: base64Audio, 
-              client_timestamp: new Date().toISOString(),
-              user_context: currentUser
+          body: JSON.stringify({
+            input_type: 'audio',
+            audio_base64: base64Audio,
+            client_timestamp: new Date().toISOString(),
+            user_context: currentUser
           })
         });
 
         if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.detail || 'Network response was not ok');
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.detail || 'Network response was not ok');
         }
         const data = await response.json();
-        
+
         // Store payload for recording
         currentAIPayload = data.data.extraction;
 
         let html = '';
-        
+
         if (data.status === 'pending_confirmation') {
-            html += `
+          html += `
               <div style="margin-bottom: 15px; color: var(--emerald-primary);">
                 <i class="fas fa-check-circle"></i> <strong>${data.data.ai_message || 'I have extracted the details. Confirm?'}</strong>
               </div>
-              <pre style="margin:0">${JSON.stringify(data.data.extraction, null, 2)}</pre>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 0.95rem; margin-top: 10px;">
+                <div style="margin-bottom: 8px;"><strong>Type:</strong> ${data.data.extraction.intent ? data.data.extraction.intent.replace(/_/g, ' ').toUpperCase() : 'N/A'}</div>
+                <div style="margin-bottom: 8px;"><strong>Amount:</strong> ₹${data.data.extraction.total_amount || 0}</div>
+                ${data.data.extraction.entity && data.data.extraction.entity.name ? '<div style="margin-bottom: 8px;"><strong>Party:</strong> ' + data.data.extraction.entity.name + '</div>' : ''}
+                <div style="margin-bottom: 8px;"><strong>Method:</strong> ${data.data.extraction.payment_channel ? data.data.extraction.payment_channel.replace(/_/g, ' ') : 'N/A'}</div>
+                <div style="margin-top: 15px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 10px;">Accounting Breakdown</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                  <thead>
+                    <tr style="text-align: left; opacity: 0.7;">
+                      <th style="padding: 4px;">Account</th>
+                      <th style="padding: 4px; text-align: right;">Debit</th>
+                      <th style="padding: 4px; text-align: right;">Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${(data.data.extraction.line_items || []).map(item => `
+                      <tr>
+                        <td style="padding: 4px;">${item.account_name}</td>
+                        <td style="padding: 4px; text-align: right;">${item.dc === 'debit' ? '₹' + item.amount : '-'}</td>
+                        <td style="padding: 4px; text-align: right;">${item.dc === 'credit' ? '₹' + item.amount : '-'}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
               <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
                 <button class="btn btn-primary" onclick="confirmAndRecord()" style="background: var(--emerald-primary)">
                   <i class="fas fa-check"></i> Confirm & Record to Ledger
@@ -1335,17 +1532,25 @@
               </div>
             `;
         } else if (data.status === 'clarification_needed') {
-            html += `
+          html += `
               <div style="margin-bottom: 15px; color: var(--warning);">
                 <i class="fas fa-exclamation-triangle"></i> <strong>${data.data.ai_message || 'I need a bit more detail to record this properly.'}</strong>
                 <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">The AI isn't confident enough. Try providing more details (e.g. exact amount, vendor name, or payment method).</p>
               </div>
-              <pre style="margin:0 opacity:0.7">${JSON.stringify(data.data.extraction, null, 2)}</pre>
+            `;
+        } else if (data.status === 'report_generated') {
+          html += `
+              <div style="margin-bottom: 15px; color: var(--emerald-primary);">
+                <i class="fas fa-chart-line"></i> <strong>AI Report & Analysis</strong>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 0.95rem; margin-top: 10px; line-height: 1.5;">
+                ${data.data.ai_message}
+              </div>
             `;
         } else {
-            html = `<pre style="margin:0">${JSON.stringify(data, null, 2)}</pre>`;
+          html = `<pre style="margin:0">${JSON.stringify(data, null, 2)}</pre>`;
         }
-        
+
         outputField.innerHTML = html;
       } catch (error) {
         outputField.innerHTML = `<span style="color: #ef4444">Error communicating with AI Service: ${error.message}</span>`;
@@ -1358,41 +1563,69 @@
       const text = inputField.value.trim();
       if (!text) return;
 
+      outputField.style.display = 'block';
       outputField.innerHTML = '<span style="opacity:0.5">Analyzing with Virtual CFO...</span>';
 
       try {
-        const response = await fetch(PYTHON_API_URL + '/extract/transaction', {
+        const response = await fetch('http://127.0.0.1:8000/internal/v1/extract/transaction', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + authToken,
-            'X-Tenant-ID': currentUser.tenant_id || 'test-tenant' 
+            'X-Tenant-ID': currentUser.tenant_id || 'test-tenant'
           },
-          body: JSON.stringify({ 
-              input_type: 'text', 
-              text: text, 
-              client_timestamp: new Date().toISOString(),
-              user_context: currentUser
+          body: JSON.stringify({
+            input_type: 'text',
+            text: text,
+            client_timestamp: new Date().toISOString(),
+            user_context: {
+              ...currentUser,
+              previous_extraction: currentAIPayload
+            }
           })
         });
 
         if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.detail || 'Network response was not ok');
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.detail || 'Network response was not ok');
         }
         const data = await response.json();
-        
+
         // Store payload for recording
         currentAIPayload = data.data.extraction;
 
         let html = '';
-        
+
         if (data.status === 'pending_confirmation') {
-            html += `
+          html += `
               <div style="margin-bottom: 15px; color: var(--emerald-primary);">
                 <i class="fas fa-check-circle"></i> <strong>${data.data.ai_message || 'I have extracted the details. Confirm?'}</strong>
               </div>
-              <pre style="margin:0">${JSON.stringify(data.data.extraction, null, 2)}</pre>
+              <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 0.95rem; margin-top: 10px;">
+                <div style="margin-bottom: 8px;"><strong>Type:</strong> ${data.data.extraction.intent ? data.data.extraction.intent.replace(/_/g, ' ').toUpperCase() : 'N/A'}</div>
+                <div style="margin-bottom: 8px;"><strong>Amount:</strong> ₹${data.data.extraction.total_amount || 0}</div>
+                ${data.data.extraction.entity && data.data.extraction.entity.name ? '<div style="margin-bottom: 8px;"><strong>Party:</strong> ' + data.data.extraction.entity.name + '</div>' : ''}
+                <div style="margin-bottom: 8px;"><strong>Method:</strong> ${data.data.extraction.payment_channel ? data.data.extraction.payment_channel.replace(/_/g, ' ') : 'N/A'}</div>
+                <div style="margin-top: 15px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; margin-bottom: 10px;">Accounting Breakdown</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                  <thead>
+                    <tr style="text-align: left; opacity: 0.7;">
+                      <th style="padding: 4px;">Account</th>
+                      <th style="padding: 4px; text-align: right;">Debit</th>
+                      <th style="padding: 4px; text-align: right;">Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${(data.data.extraction.line_items || []).map(item => `
+                      <tr>
+                        <td style="padding: 4px;">${item.account_name}</td>
+                        <td style="padding: 4px; text-align: right;">${item.dc === 'debit' ? '₹' + item.amount : '-'}</td>
+                        <td style="padding: 4px; text-align: right;">${item.dc === 'credit' ? '₹' + item.amount : '-'}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
               <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
                 <button class="btn btn-primary" onclick="confirmAndRecord(event)" style="background: var(--emerald-primary)">
                   <i class="fas fa-check"></i> Confirm & Record to Ledger
@@ -1400,79 +1633,213 @@
               </div>
             `;
         } else if (data.status === 'clarification_needed') {
-            html += `
+          html += `
               <div style="margin-bottom: 15px; color: var(--warning);">
                 <i class="fas fa-exclamation-triangle"></i> <strong>${data.data.ai_message || 'I need a bit more detail to record this properly.'}</strong>
                 <p style="margin-top: 5px; font-size: 0.9em; opacity: 0.8;">Please reply in the chat above to provide the missing information.</p>
               </div>
-              <pre style="margin:0 opacity:0.7">${JSON.stringify(data.data.extraction, null, 2)}</pre>
             `;
+        } else if (data.status === 'workflow_completed' || data.status === 'partial_completion') {
+          html += `
+            <div style="margin-bottom: 15px; color: var(--emerald-primary);">
+              <i class="fas fa-project-diagram"></i> <strong>Workflow Execution Complete</strong>
+            </div>
+            <p style="font-size: 0.9rem; margin-bottom: 15px;">${data.data.summary}</p>
+          `;
+          
+          // Clear and render timeline
+          const timelineContainer = document.getElementById('ai-timeline-container');
+          timelineContainer.innerHTML = '';
+          
+          const steps = data.data.steps || [];
+          
+          if (steps.length > 0) {
+              const timelineDiv = document.createElement('div');
+              timelineDiv.className = 'timeline-container';
+              timelineDiv.innerHTML = '<div class="timeline-line"></div>';
+              
+              steps.forEach((step, idx) => {
+                  const isCompleted = step.status === 'completed' || step.status === 'completed_with_warning';
+                  const isFailed = step.status === 'failed';
+                  const isWaiting = step.status === 'waiting_approval';
+                  
+                  let iconClass = 'timeline-icon ';
+                  let iconHtml = '<i class="fas fa-check"></i>';
+                  
+                  if (isFailed) {
+                      iconClass += 'failed';
+                      iconHtml = '<i class="fas fa-times"></i>';
+                  } else if (isWaiting) {
+                      iconClass += 'warning';
+                      iconHtml = '<i class="fas fa-hand-paper"></i>';
+                  } else if (step.status === 'skipped') {
+                      iconClass += 'warning';
+                      iconHtml = '<i class="fas fa-forward"></i>';
+                  }
+                  
+                  let tracesHtml = '';
+                  if (step.data && step.data.applied_policies && step.data.applied_policies.length > 0 && step.data.extraction && step.data.extraction.explainability_traces) {
+                      step.data.extraction.explainability_traces.forEach(trace => {
+                          tracesHtml += `
+                              <div class="policy-trace">
+                                  <div class="policy-trace-title"><i class="fas fa-shield-alt"></i> Rule Enforced: ${trace.rule_code}</div>
+                                  <div>${trace.description}</div>
+                                  <div style="margin-top: 4px; font-weight: bold;">Decision: ${trace.decision}</div>
+                              </div>
+                          `;
+                      });
+                  }
+                  
+                  let errorHtml = '';
+                  if (isWaiting) {
+                      errorHtml = `
+                          <div class="approval-halt">
+                              <strong><i class="fas fa-lock"></i> Approval Required</strong>
+                              <div style="margin-top: 4px;">${step.error}</div>
+                              <button class="btn-approve" onclick="alert('Approval recorded. Resuming workflow...')"><i class="fas fa-check-double"></i> Approve & Resume</button>
+                          </div>
+                      `;
+                  } else if (isFailed) {
+                      errorHtml = `
+                          <div class="approval-halt">
+                              <strong><i class="fas fa-exclamation-triangle"></i> Execution Failed</strong>
+                              <div style="margin-top: 4px;">${step.error}</div>
+                          </div>
+                      `;
+                  }
+
+                  const nodeHtml = `
+                      <div class="timeline-node">
+                          <div class="${iconClass}">${iconHtml}</div>
+                          <div class="timeline-content">
+                              <div class="timeline-title">
+                                  ${step.action.replace(/_/g, ' ').toUpperCase()} 
+                                  <span class="timeline-status-badge" style="background: ${isCompleted ? 'rgba(16,185,129,0.2)' : isFailed ? 'rgba(239,68,68,0.2)' : 'rgba(245,158,11,0.2)'}; color: ${isCompleted ? 'var(--emerald-primary)' : isFailed ? 'var(--danger-red)' : '#f59e0b'};">
+                                      ${step.status}
+                                  </span>
+                              </div>
+                              <div class="timeline-desc">${step.description}</div>
+                              <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 5px;">Agent: ${step.agent_type.toUpperCase()}</div>
+                              ${tracesHtml}
+                              ${errorHtml}
+                          </div>
+                      </div>
+                  `;
+                  timelineDiv.innerHTML += nodeHtml;
+              });
+              
+              if (data.data.rollback && data.data.rollback.rolled_back_step_ids && data.data.rollback.rolled_back_step_ids.length > 0) {
+                  const rollbackHtml = `
+                      <div class="timeline-node" style="margin-top: 1rem;">
+                          <div class="timeline-icon failed"><i class="fas fa-undo"></i></div>
+                          <div class="timeline-content" style="border-color: var(--danger-red);">
+                              <div class="timeline-title" style="color: var(--danger-red);">
+                                  ROLLBACK EXECUTED
+                              </div>
+                              <div class="timeline-desc">Compensation strategy triggered.</div>
+                              <div style="font-size: 0.8rem;">Reversed Steps: ${data.data.rollback.rolled_back_step_ids.join(', ')}</div>
+                          </div>
+                      </div>
+                  `;
+                  timelineDiv.innerHTML += rollbackHtml;
+              }
+              
+              timelineContainer.appendChild(timelineDiv);
+          }
+          
         } else {
-            html = `<pre style="margin:0">${JSON.stringify(data, null, 2)}</pre>`;
+          html = `<pre style="margin:0">${JSON.stringify(data, null, 2)}</pre>`;
         }
-        
+
         outputField.innerHTML = html;
+        inputField.value = '';
+        outputField.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } catch (error) {
         outputField.innerHTML = `<span style="color: #ef4444">Error communicating with AI Service: ${error.message}</span>`;
       }
     }
 
     async function confirmAndRecord(event) {
-        if (!currentAIPayload) return;
-        
-        const isSales = currentAIPayload.module === 'sales';
-        const endpoint = isSales ? LARAVEL_API_URL + '/invoices/ai-create' : LARAVEL_API_URL + '/journal-entries';
-        
-        const payload = {
-            intent: currentAIPayload.intent,
-            total_amount: currentAIPayload.total_amount,
-            line_items: currentAIPayload.line_items,
-            operational_data: currentAIPayload.operational_data,
-            entity: currentAIPayload.entity,
-            payment_channel: currentAIPayload.payment_channel,
-            narration: 'AI Generated Entry' + (currentAIPayload.payment_channel ? ' via ' + currentAIPayload.payment_channel : '')
-        };
+      if (!currentAIPayload) return;
 
-        try {
-            const btn = event.currentTarget;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recording...';
-            btn.disabled = true;
+      const isSales = currentAIPayload.module === 'sales';
+      const isPurchases = currentAIPayload.module === 'purchases';
+      
+      let endpoint = 'http://127.0.0.1:8001/api/journal-entries';
+      if (isSales) endpoint = 'http://127.0.0.1:8001/api/invoices/ai-create';
+      if (isPurchases) endpoint = 'http://127.0.0.1:8001/api/purchase-bills/ai-create';
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                },
-                body: JSON.stringify(payload)
-            });
+      const payload = {
+        intent: currentAIPayload.intent,
+        total_amount: currentAIPayload.total_amount,
+        line_items: currentAIPayload.line_items,
+        operational_data: currentAIPayload.operational_data,
+        entity: currentAIPayload.entity,
+        payment_channel: currentAIPayload.payment_channel,
+        narration: (currentAIPayload.line_items && currentAIPayload.line_items[0] && currentAIPayload.line_items[0].description) ? currentAIPayload.line_items[0].description : 'AI Generated Entry' + (currentAIPayload.payment_channel ? ' via ' + currentAIPayload.payment_channel : '')
+      };
 
-            const result = await response.json();
+      try {
+        const btn = event.currentTarget;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recording...';
+        btn.disabled = true;
 
-            if (response.ok) {
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Recorded Successfully!';
-                btn.style.background = '#059669';
-                
-                const successMsg = isSales 
-                    ? `<strong>Success!</strong> Invoice has been created and Journal Entry recorded.<br><div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">Invoice ID: ${result.invoice_id}</div>`
-                    : `<strong>Success!</strong> Journal Entry has been permanently recorded to your ledger.<br><div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">Entry ID: ${result.journal_entry_id}</div>`;
-                
-                currentAIPayload = null;
-                setTimeout(() => {
-                    inputField.value = '';
-                    outputField.innerHTML = `
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          btn.innerHTML = '<i class="fas fa-check-circle"></i> Recorded Successfully!';
+          btn.style.background = '#059669';
+
+          const successMsg = isSales
+            ? `<strong>Success!</strong> Invoice has been created and Journal Entry recorded.<br><div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">Invoice ID: ${result.invoice_id}</div>`
+            : `<strong>Success!</strong> Journal Entry has been permanently recorded to your ledger.<br><div style="font-size: 0.85em; opacity: 0.8; margin-top: 5px;">Entry ID: ${result.journal_entry_id}</div>`;
+
+          currentAIPayload = null;
+          
+          // Prepend to timeline dynamically
+          const timeline = document.getElementById('ai-timeline-container');
+          if (timeline) {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const timelineItem = document.createElement('div');
+            timelineItem.style.display = 'flex';
+            timelineItem.style.gap = '1rem';
+            
+            const msg = isSales ? 'AI generated invoice and recorded revenue' : 'AI categorized and posted an expense';
+            timelineItem.innerHTML = `
+              <div style="color: var(--text-muted); font-size: 0.8rem; font-family: monospace;">${timeStr}</div>
+              <div style="border-left: 2px solid var(--border-color); padding-left: 1rem; padding-bottom: 1.5rem;">
+                <div style="font-size: 0.9rem; color: var(--emerald-primary);">${msg}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Amount: ₹${payload.total_amount}</div>
+              </div>
+            `;
+            timeline.prepend(timelineItem);
+          }
+
+          setTimeout(() => {
+            inputField.value = '';
+            outputField.innerHTML = `
                       <div style="color: var(--emerald-primary); padding: 15px; background: rgba(5,150,105,0.1); border-radius: 8px; border: 1px solid rgba(5,150,105,0.3);">
                         <i class="fas fa-check-circle"></i> ${successMsg}
                       </div>
                     `;
-                }, 1500);
-            } else {
-                throw new Error(result.message || 'Failed to record');
-            }
-        } catch (error) {
-            alert('Error recording transaction: ' + error.message);
+          }, 1500);
+        } else {
+          throw new Error(result.message || 'Failed to record');
         }
+      } catch (error) {
+        alert('Error recording transaction: ' + error.message);
+      }
     }
 
     // Setup toggle behavior
@@ -1482,146 +1849,367 @@
     const aiConfigFields = document.getElementById('ai-config-fields');
 
     function updateToggleUI(isActive) {
-        if (isActive) {
-            aiToggle.style.background = 'var(--emerald-primary)';
-            aiToggle.style.borderColor = 'var(--emerald-primary)';
-            aiToggleKnob.style.transform = 'translateX(20px)';
-            aiToggleKnob.style.background = 'white';
-            aiStatusText.innerText = 'AI is Active';
-            aiStatusText.style.color = 'var(--emerald-primary)';
-            aiConfigFields.style.opacity = '1';
-            aiConfigFields.style.pointerEvents = 'auto';
-        } else {
-            aiToggle.style.background = 'rgba(0,0,0,0.3)';
-            aiToggle.style.borderColor = 'var(--border-glass)';
-            aiToggleKnob.style.transform = 'translateX(0)';
-            aiToggleKnob.style.background = 'var(--text-muted)';
-            aiStatusText.innerText = 'AI is Deactivated';
-            aiStatusText.style.color = 'var(--text-muted)';
-            aiConfigFields.style.opacity = '0.4';
-            aiConfigFields.style.pointerEvents = 'none';
-        }
+      if (isActive) {
+        aiToggle.style.background = 'var(--emerald-primary)';
+        aiToggle.style.borderColor = 'var(--emerald-primary)';
+        aiToggleKnob.style.transform = 'translateX(20px)';
+        aiToggleKnob.style.background = 'white';
+        aiStatusText.innerText = 'AI is Active';
+        aiStatusText.style.color = 'var(--emerald-primary)';
+        aiConfigFields.style.opacity = '1';
+        aiConfigFields.style.pointerEvents = 'auto';
+      } else {
+        aiToggle.style.background = 'rgba(0,0,0,0.3)';
+        aiToggle.style.borderColor = 'var(--border-glass)';
+        aiToggleKnob.style.transform = 'translateX(0)';
+        aiToggleKnob.style.background = 'var(--text-muted)';
+        aiStatusText.innerText = 'AI is Deactivated';
+        aiStatusText.style.color = 'var(--text-muted)';
+        aiConfigFields.style.opacity = '0.4';
+        aiConfigFields.style.pointerEvents = 'none';
+      }
     }
 
     aiToggle.addEventListener('change', (e) => {
-        updateToggleUI(e.target.checked);
+      updateToggleUI(e.target.checked);
     });
 
     async function loadAIConfig() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/settings', {
-                headers: { 'Authorization': 'Bearer ' + authToken }
-            });
-            if (response.ok) {
-                const result = await response.json();
-                if (result.data) {
-                    const isEnabled = result.data.ai_enabled !== 'false'; // default true
-                    aiToggle.checked = isEnabled;
-                    updateToggleUI(isEnabled);
-                    
-                    document.getElementById('openai-api-key').value = result.data.openai_api_key || '';
-                    document.getElementById('gemini-api-key').value = result.data.gemini_api_key || '';
-                    
-                    const provider = result.data.ai_provider || 'mock';
-                    const radio = document.querySelector(`input[name="active_provider"][value="${provider}"]`);
-                    if (radio) radio.checked = true;
-                }
-            }
-        } catch (e) {
-            console.error("Failed to load settings", e);
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/system-settings', {
+          headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            const isEnabled = result.data.ai_enabled !== 'false'; // default true
+            aiToggle.checked = isEnabled;
+            updateToggleUI(isEnabled);
+
+            document.getElementById('openai-api-key').value = result.data.openai_api_key || '';
+            document.getElementById('gemini-api-key').value = result.data.gemini_api_key || '';
+
+            const provider = result.data.ai_provider || 'mock';
+            const radio = document.querySelector(`input[name="active_provider"][value="${provider}"]`);
+            if (radio) radio.checked = true;
+          }
         }
+      } catch (e) {
+        console.error("Failed to load settings", e);
+      }
     }
 
     async function loadTenants() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/tenants', {
-                headers: { 'Authorization': 'Bearer ' + authToken }
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/tenants', {
+          headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('tenant-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(tenant => {
+              const modules = tenant.enabled_modules || ['core_accounting', 'inventory'];
+              const hasInventory = modules.includes('inventory');
+              const invBadge = hasInventory 
+                ? '<span class="badge badge-success" style="cursor:pointer;" title="Click to disable" onclick="toggleTenantModule(\'' + tenant.id + '\', \'inventory\', false)"><i class="fas fa-check-circle"></i> Inventory Active</span>'
+                : '<span class="badge" style="background:rgba(255,255,255,0.1); color:var(--text-muted); cursor:pointer;" title="Click to enable" onclick="toggleTenantModule(\'' + tenant.id + '\', \'inventory\', true)"><i class="fas fa-times-circle"></i> Inventory Off</span>';
+              
+              tbody.innerHTML += `<tr>
+                             <td><strong>${tenant.business_name}</strong><br><small style="color:var(--text-muted); font-family:monospace">${tenant.id.substring(0, 8)}...</small></td>
+                             <td style="color:var(--emerald-primary)">${tenant.owner_email}</td>
+                             <td>${tenant.pan || 'N/A'}</td>
+                             <td>${tenant.users}</td>
+                             <td>${invBadge}</td>
+                             <td>
+                               <button class="btn" style="font-size:0.75rem; padding:0.25rem 0.5rem; background: ${hasInventory ? 'rgba(239, 68, 68, 0.2); color:#f87171;' : 'rgba(16, 185, 129, 0.2); color:#34d399;'}" onclick="toggleTenantModule('${tenant.id}', 'inventory', ${!hasInventory})">
+                                 ${hasInventory ? '<i class="fas fa-power-off"></i> Disable Inventory' : '<i class="fas fa-plus-circle"></i> Enable Inventory Add-on'}
+                               </button>
+                             </td>
+                         </tr>`;
             });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('tenant-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(tenant => {
-                        tbody.innerHTML += `<tr>
-                            <td><strong>${tenant.business_name}</strong><br><small style="color:var(--text-muted); font-family:monospace">${tenant.id.substring(0,8)}...</small></td>
-                            <td style="color:var(--emerald-primary)">${tenant.owner_email}</td>
-                            <td>${tenant.pan || 'N/A'}</td>
-                            <td>${tenant.users}</td>
-                            <td><span class="badge badge-success">${tenant.status}</span></td>
-                        </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No businesses registered yet.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load tenants:', err);
+          } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No businesses registered yet.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load tenants:', err);
+      }
+    }
+
+    async function toggleTenantModule(tenantId, moduleName, enable) {
+      try {
+        // Fetch existing modules
+        const response = await fetch('http://127.0.0.1:8001/api/tenants', {
+          headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        if (!response.ok) return;
+        const resData = await response.json();
+        const currentTenant = (resData.data || []).find(t => t.id === tenantId);
+        let modules = (currentTenant && currentTenant.enabled_modules) ? [...currentTenant.enabled_modules] : ['core_accounting', 'inventory'];
+
+        if (enable && !modules.includes(moduleName)) {
+          modules.push(moduleName);
+        } else if (!enable && modules.includes(moduleName)) {
+          modules = modules.filter(m => m !== moduleName);
+        }
+
+        const updateRes = await fetch(`http://127.0.0.1:8001/api/tenants/${tenantId}/modules`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken
+          },
+          body: JSON.stringify({ enabled_modules: modules })
+        });
+
+        if (updateRes.ok) {
+          alert(`Successfully ${enable ? 'enabled' : 'disabled'} ${moduleName} module for tenant!`);
+          loadTenants();
+        } else {
+          alert('Failed to update module configuration.');
+        }
+      } catch (err) {
+        console.error('Error toggling module:', err);
+        alert('Error updating module.');
+      }
     }
 
     async function loadDashboard() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/dashboard', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/ai/dashboard', {
+          headers: {
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        
+        if (response.ok) {
+          const r = await response.json();
+          const fmt = (n) => '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits:0});
+          
+          // Section A: Morning Greeting
+          document.getElementById('exec-greeting-text').innerText = r.executive_brief.greeting;
+          document.getElementById('exec-health-score').innerText = r.business_health.score;
+          document.getElementById('exec-health-msg').innerText = r.executive_brief.health_message;
+          if (r.executive_brief.top_attention) {
+            document.getElementById('exec-top-attention').style.display = 'flex';
+            document.getElementById('exec-top-action').innerText = r.executive_brief.top_attention;
+          }
+
+          // Section B: KPI Strip
+          document.getElementById('kpi-health').innerText = r.business_health.score + ' / 100';
+          document.getElementById('kpi-cash').innerText = fmt(r.business_health.cash_available);
+          document.getElementById('kpi-earned').innerText = fmt(r.business_health.money_earned_yesterday);
+          document.getElementById('kpi-spent').innerText = fmt(r.business_health.money_spent_yesterday);
+          document.getElementById('kpi-projected').innerText = fmt(r.business_health.projected_cash_30d);
+          document.getElementById('kpi-runway').innerText = r.business_health.cash_runway_days + ' Days';
+
+          // Section C: Warnings
+          const warnContainer = document.getElementById('exec-warnings');
+          warnContainer.innerHTML = '';
+          if (r.warnings && r.warnings.length > 0) {
+            r.warnings.forEach(w => {
+              warnContainer.innerHTML += `
+                <div class="exec-warning ${w.level}">
+                  <i class="${w.icon}"></i>
+                  <span>${w.message}</span>
+                  <span style="margin-left:auto; font-size:0.7rem; opacity:0.7;">${w.category}</span>
+                </div>
+              `;
             });
-            if (response.ok) {
-                const result = await response.json();
-                const d = result.data;
-                document.getElementById('dash-cash').innerText = '₹' + d.total_cash.toLocaleString('en-IN');
-                document.getElementById('dash-receivable').innerText = '₹' + d.accounts_receivable.toLocaleString('en-IN');
-                document.getElementById('dash-unbilled').innerText = '₹' + d.unbilled_invoices.toLocaleString('en-IN');
-                document.getElementById('dash-payable').innerText = '₹' + d.accounts_payable.toLocaleString('en-IN');
-                
-                const tbody = document.getElementById('dash-activity-body');
-                tbody.innerHTML = '';
-                if (d.recent_invoices && d.recent_invoices.length > 0) {
-                    d.recent_invoices.forEach(inv => {
-                        let badge = 'badge-purple';
-                        if (inv.status === 'Paid') badge = 'badge-success';
-                        else if (inv.status === 'Overdue') badge = 'badge-danger';
-                        
-                        tbody.innerHTML += `<tr>
-                            <td>${inv.issue_date}</td>
-                            <td>${inv.customer ? inv.customer.name : 'Unknown'}</td>
-                            <td style="font-family:monospace">${inv.invoice_number}</td>
-                            <td>₹${parseFloat(inv.total_amount).toLocaleString('en-IN')}</td>
-                            <td><span class="badge ${badge}">${inv.status}</span></td>
-                        </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No recent activity.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load dashboard:', err);
+          }
+
+          // Section D: Today's Priorities (Action Cards with Why Drawer)
+          const prioContainer = document.getElementById('exec-priorities');
+          prioContainer.innerHTML = '';
+          if (r.priorities && r.priorities.length > 0) {
+            r.priorities.forEach((p, idx) => {
+              const stars = '★'.repeat(Math.min(5, Math.ceil((p.confidence || 50) / 20)));
+              const actBtns = (p.actions || []).map(a => {
+                const cls = a.type === 'dismiss' ? 'dismiss-btn' : '';
+                return `<button class="${cls}" onclick="${a.type === 'dismiss' ? "this.closest('.exec-action-card').style.display='none'" : "alert('Routing to Workflow Orchestrator...')"}"><i class="${a.icon}"></i> ${a.label}</button>`;
+              }).join('');
+
+              let whyHtml = '';
+              if (p.explainability) {
+                const ex = p.explainability;
+                const alts = (ex.alternatives || []).map(a => `<li>${a}</li>`).join('');
+                whyHtml = `
+                  <div class="why-drawer" id="why-drawer-${idx}">
+                    <div class="why-drawer-content">
+                      <h4><i class="fas fa-search"></i> Explainability Report</h4>
+                      <div class="why-section">
+                        <div class="why-label">Why?</div>
+                        <div>${ex.why}</div>
+                      </div>
+                      <div class="why-section">
+                        <div class="why-label">Data Used</div>
+                        <div>${ex.data_used}</div>
+                      </div>
+                      <div class="why-section">
+                        <div class="why-label">Assumptions</div>
+                        <div>${ex.assumptions}</div>
+                      </div>
+                      <div class="why-section">
+                        <div class="why-label">Confidence</div>
+                        <div>${ex.confidence}%</div>
+                      </div>
+                      <div class="why-section">
+                        <div class="why-label">Alternatives</div>
+                        <ul style="padding-left:1.2rem;">${alts}</ul>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+
+              prioContainer.innerHTML += `
+                <div class="exec-action-card">
+                  <div class="card-header">
+                    <div class="card-rank">${p.priority_rank || idx+1}</div>
+                    <div class="card-title">${p.action || ''}</div>
+                  </div>
+                  <div class="card-meta">
+                    <span class="meta-tag"><i class="fas fa-signal"></i> Impact: ${stars}</span>
+                    <span class="meta-tag"><i class="fas fa-flag"></i> ${p.priority || 'MEDIUM'}</span>
+                    <span class="meta-tag"><i class="fas fa-percentage"></i> ${p.confidence || 50}%</span>
+                    <span class="meta-tag"><i class="fas fa-clock"></i> ${p.estimated_time || 'Today'}</span>
+                  </div>
+                  <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">${p.narrative || p.reason || ''}</p>
+                  <div class="card-actions">
+                    ${actBtns}
+                    <button onclick="toggleWhy(${idx})" style="margin-left:auto; background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:var(--accent-purple);"><i class="fas fa-question-circle"></i> Why?</button>
+                  </div>
+                  ${whyHtml}
+                </div>
+              `;
+            });
+          } else {
+            prioContainer.innerHTML = '<div style="color: var(--text-muted); padding: 1rem; text-align:center;">No urgent priorities right now. Your business is running smoothly.</div>';
+          }
+
+          // Section E: Intelligence Suite
+          const intelContainer = document.getElementById('exec-intelligence');
+          intelContainer.innerHTML = '';
+          const intel = r.intelligence || {};
+          const riskScore = intel.risk ? intel.risk.overall_score : 0;
+          const growthVal = 82;
+          const opsVal = 91;
+          const compVal = 100;
+          
+          const intelCards = [
+            { label: 'Business Health', score: r.business_health.score, status: r.business_health.score >= 85 ? 'Excellent' : 'Moderate', statusClass: r.business_health.score >= 85 ? 'excellent' : 'moderate' },
+            { label: 'Risk', score: riskScore, status: intel.risk ? intel.risk.level : 'Low', statusClass: riskScore < 30 ? 'low' : 'moderate' },
+            { label: 'Growth', score: growthVal, status: 'Strong', statusClass: 'strong' },
+            { label: 'Operations', score: opsVal, status: 'Healthy', statusClass: 'excellent' },
+          ];
+          intelCards.forEach(c => {
+            intelContainer.innerHTML += `
+              <div class="exec-intel-card">
+                <div class="intel-score">${c.score}</div>
+                <div class="intel-label">${c.label}</div>
+                <span class="intel-status ${c.statusClass}">${c.status}</span>
+              </div>
+            `;
+          });
+
+          // Section F: Business Outlook
+          const forecastContainer = document.getElementById('exec-forecast');
+          forecastContainer.innerHTML = '';
+          const f = r.forecast || {};
+          const forecastItems = [
+            { label: 'Projected Revenue', value: fmt(f.projected_revenue || 0), color: '' },
+            { label: 'Projected Cash', value: fmt(f.projected_cash || 0), color: '' },
+            { label: 'Projected Profit', value: fmt(f.projected_profit || 0), color: 'color:var(--emerald-primary);' },
+            { label: 'Projected GST', value: fmt(f.projected_gst || 0), color: 'color:#f59e0b;' },
+            { label: 'Projected Expenses', value: fmt(f.projected_expenses || 0), color: 'color:var(--danger-red);' },
+            { label: 'Risk Level', value: f.risk_level || 'Medium', color: '' },
+          ];
+          forecastItems.forEach(fi => {
+            forecastContainer.innerHTML += `
+              <div class="exec-kpi-card">
+                <div class="exec-kpi-label">${fi.label}</div>
+                <div class="exec-kpi-value" style="${fi.color}">${fi.value}</div>
+              </div>
+            `;
+          });
+          forecastContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+
+          // Section G: Today's Wins
+          const winsContainer = document.getElementById('exec-wins');
+          winsContainer.innerHTML = '';
+          const w = r.todays_wins || {};
+          const wins = [
+            { label: 'Collected Yesterday', value: fmt(w.collections_yesterday || 0) },
+            { label: 'Inventory Loss Prevented', value: fmt(w.inventory_loss_prevented || 0) },
+            { label: 'Profit Improved', value: fmt(w.profit_improved || 0) },
+            { label: 'Recommendations Followed', value: w.recommendations_followed || 0 },
+          ];
+          wins.forEach(win => {
+            winsContainer.innerHTML += `
+              <div class="exec-win-card">
+                <div class="win-value">${win.value}</div>
+                <div class="win-label">${win.label}</div>
+              </div>
+            `;
+          });
+
+          // Section H: AI Confidence
+          const confContainer = document.getElementById('exec-confidence');
+          const conf = r.confidence || {};
+          confContainer.innerHTML = `
+            <div class="conf-score">${conf.score || 98}%</div>
+            <div class="conf-details">
+              <div style="font-weight:600; color: var(--text-main); margin-bottom: 0.25rem;">Today's AI Confidence</div>
+              <div>Based on <strong>${(conf.based_on || {}).transactions || 0}</strong> transactions, <strong>${(conf.based_on || {}).invoices || 0}</strong> invoices, and <strong>${(conf.based_on || {}).months_of_history || 0}</strong> months of history.</div>
+            </div>
+          `;
+
+          // Section I: Business Timeline
+          const tlContainer = document.getElementById('exec-timeline');
+          tlContainer.innerHTML = '';
+          (r.activity_timeline || []).forEach(item => {
+            tlContainer.innerHTML += `
+              <div class="exec-timeline-item">
+                <span class="tl-time">${item.time}</span>
+                <i class="${item.icon}" style="color: var(--accent-purple); width:16px;"></i>
+                <span>${item.event}</span>
+              </div>
+            `;
+          });
         }
+      } catch (err) {
+        console.error('Failed to load Executive Workspace:', err);
+      }
+    }
+    
+    function toggleWhy(idx) {
+      const drawer = document.getElementById('why-drawer-' + idx);
+      if (drawer) drawer.classList.toggle('open');
     }
 
     async function loadInvoices() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/invoices', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('invoice-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(inv => {
-                        let badge = 'badge-purple';
-                        if (inv.status === 'Paid') badge = 'badge-success';
-                        else if (inv.status === 'Overdue') badge = 'badge-danger';
-                        
-                        let payBtn = inv.status !== 'Paid' ? `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border-color); padding:0.3rem 0.6rem" onclick="openPaymentModal('${inv.id}')"><i class="fas fa-rupee-sign"></i> Pay</button>` : '';
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/invoices', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('invoice-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(inv => {
+              let badge = 'badge-purple';
+              if (inv.status === 'Paid') badge = 'badge-success';
+              else if (inv.status === 'Overdue') badge = 'badge-danger';
 
-                        tbody.innerHTML += `<tr>
+              let payBtn = inv.status !== 'Paid' ? `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border-color); padding:0.3rem 0.6rem" onclick="openPaymentModal('${inv.id}')"><i class="fas fa-rupee-sign"></i> Pay</button>` : '';
+
+              tbody.innerHTML += `<tr>
                             <td>${inv.issue_date}</td>
                             <td>${inv.customer ? inv.customer.name : 'Unknown'}</td>
                             <td style="font-family:monospace">${inv.invoice_number}</td>
@@ -1629,77 +2217,77 @@
                             <td><span class="badge ${badge}">${inv.status}</span></td>
                             <td>${payBtn}</td>
                         </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No invoices found.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load invoices:', err);
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No invoices found.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load invoices:', err);
+      }
     }
 
     async function loadLedger() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/journal-entries', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('ledger-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(entry => {
-                        if (entry.lines && entry.lines.length > 0) {
-                            entry.lines.forEach((line, index) => {
-                                let debit = line.debit_amount > 0 ? `₹${parseFloat(line.debit_amount).toLocaleString('en-IN')}` : '-';
-                                let credit = line.credit_amount > 0 ? `₹${parseFloat(line.credit_amount).toLocaleString('en-IN')}` : '-';
-                                let dateCell = index === 0 ? `<td rowspan="${entry.lines.length}">${entry.entry_date}</td>` : '';
-                                let narrationCell = index === 0 ? `<td rowspan="${entry.lines.length}">${entry.narration || ''}</td>` : '';
-                                
-                                tbody.innerHTML += `<tr>
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/journal-entries', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('ledger-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(entry => {
+              if (entry.lines && entry.lines.length > 0) {
+                entry.lines.forEach((line, index) => {
+                  let debit = line.debit_amount > 0 ? `₹${parseFloat(line.debit_amount).toLocaleString('en-IN')}` : '-';
+                  let credit = line.credit_amount > 0 ? `₹${parseFloat(line.credit_amount).toLocaleString('en-IN')}` : '-';
+                  let dateCell = index === 0 ? `<td rowspan="${entry.lines.length}">${entry.entry_date}</td>` : '';
+                  let narrationCell = index === 0 ? `<td rowspan="${entry.lines.length}">${entry.narration || ''}</td>` : '';
+
+                  tbody.innerHTML += `<tr>
                                     ${dateCell}
                                     ${narrationCell}
                                     <td>${line.account_name} (${line.account_code})</td>
                                     <td style="text-align: right; color: var(--emerald-primary);">${debit}</td>
                                     <td style="text-align: right;">${credit}</td>
                                 </tr>`;
-                            });
-                        }
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No journal entries found.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load ledger:', err);
+                });
+              }
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No journal entries found.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load ledger:', err);
+      }
     }
 
     async function loadPurchases() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/purchase-bills', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('purchases-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(bill => {
-                        let badge = 'badge-purple';
-                        if (bill.status === 'Paid') badge = 'badge-success';
-                        else if (bill.status === 'Overdue') badge = 'badge-danger';
-                        
-                        let payBtn = bill.status !== 'Paid' ? `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border-color); padding:0.3rem 0.6rem" onclick="alert('Payment modal coming soon')"><i class="fas fa-rupee-sign"></i> Pay</button>` : '';
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/purchase-bills', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('purchases-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(bill => {
+              let badge = 'badge-purple';
+              if (bill.status === 'Paid') badge = 'badge-success';
+              else if (bill.status === 'Overdue') badge = 'badge-danger';
 
-                        tbody.innerHTML += `<tr>
+              let payBtn = bill.status !== 'Paid' ? `<button class="btn" style="background:var(--card-bg); border:1px solid var(--border-color); padding:0.3rem 0.6rem" onclick="alert('Payment modal coming soon')"><i class="fas fa-rupee-sign"></i> Pay</button>` : '';
+
+              tbody.innerHTML += `<tr>
                             <td>${bill.issue_date}</td>
                             <td>${bill.supplier ? bill.supplier.name : 'Unknown'}</td>
                             <td style="font-family:monospace">${bill.bill_number}</td>
@@ -1707,281 +2295,286 @@
                             <td><span class="badge ${badge}">${bill.status}</span></td>
                             <td>${payBtn}</td>
                         </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No bills found.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load purchases:', err);
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No bills found.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load purchases:', err);
+      }
     }
     async function loadLedger() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/journal-entries', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('ledger-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(entry => {
-                        // First line gets the date and narration
-                        let isFirstLine = true;
-                        
-                        entry.lines.forEach(line => {
-                            const debit = line.debit_amount > 0 ? `₹${parseFloat(line.debit_amount).toLocaleString('en-IN')}` : '-';
-                            const credit = line.credit_amount > 0 ? `₹${parseFloat(line.credit_amount).toLocaleString('en-IN')}` : '-';
-                            
-                            tbody.innerHTML += `<tr>
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/journal-entries', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('ledger-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(entry => {
+              // First line gets the date and narration
+              let isFirstLine = true;
+
+              entry.lines.forEach(line => {
+                const debit = line.debit_amount > 0 ? `₹${parseFloat(line.debit_amount).toLocaleString('en-IN')}` : '-';
+                const credit = line.credit_amount > 0 ? `₹${parseFloat(line.credit_amount).toLocaleString('en-IN')}` : '-';
+
+                tbody.innerHTML += `<tr>
                                 <td>${isFirstLine ? entry.entry_date : ''}</td>
                                 <td style="color: var(--text-muted); font-size: 0.9em;">${isFirstLine ? entry.narration : ''}</td>
                                 <td>${line.account_name} <span style="color: var(--text-muted); font-size: 0.8em;">(${line.account_code})</span></td>
                                 <td style="text-align: right; color: ${line.debit_amount > 0 ? 'var(--emerald-primary)' : 'inherit'};">${debit}</td>
                                 <td style="text-align: right; color: ${line.credit_amount > 0 ? 'var(--danger-red)' : 'inherit'};">${credit}</td>
                             </tr>`;
-                            isFirstLine = false;
-                        });
-                        
-                        // Add a visual separator between journal entries
-                        tbody.innerHTML += `<tr style="border-bottom: 2px solid var(--border-color);"><td colspan="5" style="padding: 0; height: 10px;"></td></tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No ledger entries found.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load ledger:', err);
-            document.getElementById('ledger-table-body').innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger-red);">Failed to load ledger entries.</td></tr>';
+                isFirstLine = false;
+              });
+
+              // Add a visual separator between journal entries
+              tbody.innerHTML += `<tr style="border-bottom: 2px solid var(--border-color);"><td colspan="5" style="padding: 0; height: 10px;"></td></tr>`;
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No ledger entries found.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load ledger:', err);
+        document.getElementById('ledger-table-body').innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger-red);">Failed to load ledger entries.</td></tr>';
+      }
     }
 
     async function loadGlobalTaxRules() {
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/global-tax-rules', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                const tbody = document.getElementById('global-tax-table-body');
-                tbody.innerHTML = '';
-                if (data.data && data.data.length > 0) {
-                    data.data.forEach(rule => {
-                        tbody.innerHTML += `<tr>
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/global-tax-rules', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const tbody = document.getElementById('global-tax-table-body');
+          tbody.innerHTML = '';
+          if (data.data && data.data.length > 0) {
+            data.data.forEach(rule => {
+              tbody.innerHTML += `<tr>
                             <td><strong>${rule.tax_code}</strong></td>
                             <td>${rule.country}</td>
                             <td><span class="badge badge-purple">${rule.regime}</span></td>
                             <td style="font-family: monospace; font-size: 0.85em;">${rule.components}</td>
                         </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No global tax rules found.</td></tr>';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load global tax rules:', err);
+            });
+          } else {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No global tax rules found.</td></tr>';
+          }
         }
+      } catch (err) {
+        console.error('Failed to load global tax rules:', err);
+      }
     }
 
     async function loadTenantTaxSettings() {
-        try {
-            // Also populate the global rules dropdown
-            const globalRes = await fetch(LARAVEL_API_URL + '/global-tax-rules', {
-                headers: { 'Authorization': 'Bearer ' + authToken }
+      try {
+        // Also populate the global rules dropdown
+        const globalRes = await fetch('http://127.0.0.1:8001/api/global-tax-rules', {
+          headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        if (globalRes.ok) {
+          const gData = await globalRes.json();
+          const select = document.getElementById('tenant-default-tax');
+          select.innerHTML = '<option value="">None</option>';
+          if (gData.data) {
+            gData.data.forEach(rule => {
+              select.innerHTML += `<option value="${rule.tax_code}">${rule.tax_code} (${rule.country})</option>`;
             });
-            if (globalRes.ok) {
-                const gData = await globalRes.json();
-                const select = document.getElementById('tenant-default-tax');
-                select.innerHTML = '<option value="">None</option>';
-                if (gData.data) {
-                    gData.data.forEach(rule => {
-                        select.innerHTML += `<option value="${rule.tax_code}">${rule.tax_code} (${rule.country})</option>`;
-                    });
-                }
-            }
-
-            const response = await fetch(LARAVEL_API_URL + '/tenant-tax-settings', {
-                headers: { 
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                if (data.data) {
-                    document.getElementById('tenant-tax-registered').value = data.data.is_tax_registered ? '1' : '0';
-                    document.getElementById('tenant-tax-id').value = data.data.tax_id_number || '';
-                    document.getElementById('tenant-home-state').value = data.data.home_state || '';
-                    document.getElementById('tenant-default-tax').value = data.data.default_sales_tax_code || '';
-                    document.getElementById('tenant-tax-inclusive').value = data.data.is_tax_inclusive ? '1' : '0';
-                }
-            }
-        } catch (err) {
-            console.error('Failed to load tenant tax settings:', err);
+          }
         }
+
+        const response = await fetch('http://127.0.0.1:8001/api/tenant-tax-settings', {
+          headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            document.getElementById('tenant-tax-registered').value = data.data.is_tax_registered ? '1' : '0';
+            document.getElementById('tenant-tax-id').value = data.data.tax_id_number || '';
+            document.getElementById('tenant-home-state').value = data.data.home_state || '';
+            document.getElementById('tenant-default-tax').value = data.data.default_sales_tax_code || '';
+            document.getElementById('tenant-tax-inclusive').value = data.data.is_tax_inclusive ? '1' : '0';
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load tenant tax settings:', err);
+      }
     }
 
     async function saveTenantTaxSettings() {
-        const payload = {
-            is_tax_registered: document.getElementById('tenant-tax-registered').value === '1',
-            tax_id_number: document.getElementById('tenant-tax-id').value,
-            home_state: document.getElementById('tenant-home-state').value,
-            default_sales_tax_code: document.getElementById('tenant-default-tax').value,
-            is_tax_inclusive: document.getElementById('tenant-tax-inclusive').value === '1',
-        };
+      const payload = {
+        is_tax_registered: document.getElementById('tenant-tax-registered').value === '1',
+        tax_id_number: document.getElementById('tenant-tax-id').value,
+        home_state: document.getElementById('tenant-home-state').value,
+        default_sales_tax_code: document.getElementById('tenant-default-tax').value,
+        is_tax_inclusive: document.getElementById('tenant-tax-inclusive').value === '1',
+      };
 
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/tenant-tax-settings', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken,
-                    'X-Tenant-ID': currentUser.tenant_id
-                },
-                body: JSON.stringify(payload)
-            });
-            if (response.ok) {
-                alert('Tax & Compliance settings saved successfully!');
-            } else {
-                alert('Failed to save settings.');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error saving settings.');
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/tenant-tax-settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken,
+            'X-Tenant-ID': currentUser.tenant_id
+          },
+          body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+          alert('Tax & Compliance settings saved successfully!');
+        } else {
+          alert('Failed to save settings.');
         }
+      } catch (err) {
+        console.error(err);
+        alert('Error saving settings.');
+      }
     }
 
     function openPaymentModal(invoiceId) {
-        document.getElementById('pay-invoice-id').value = invoiceId;
-        document.getElementById('modal-record-payment').style.display = 'flex';
+      document.getElementById('pay-invoice-id').value = invoiceId;
+      document.getElementById('modal-record-payment').style.display = 'flex';
     }
 
     async function createInvoice() {
-        // Mock create customer first for MVP
-        let customerId;
-        try {
-            const cRes = await fetch(LARAVEL_API_URL + '/customers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken
-                },
-                body: JSON.stringify({
-                    name: document.getElementById('inv-customer').value
-                })
-            });
-            const cData = await cRes.json();
-            customerId = cData.data.id;
-        } catch (e) {
-            alert('Failed to create customer');
-            return;
-        }
+      // Mock create customer first for MVP
+      let customerId;
+      try {
+        const cRes = await fetch('http://127.0.0.1:8001/api/customers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken
+          },
+          body: JSON.stringify({
+            name: document.getElementById('inv-customer').value
+          })
+        });
+        const cData = await cRes.json();
+        customerId = cData.data.id;
+      } catch (e) {
+        alert('Failed to create customer');
+        return;
+      }
 
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/invoices', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken
-                },
-                body: JSON.stringify({
-                    customer_id: customerId,
-                    invoice_number: 'INV-' + Math.floor(Math.random() * 100000),
-                    description: document.getElementById('inv-desc').value,
-                    total_amount: document.getElementById('inv-amount').value,
-                    issue_date: new Date().toISOString().split('T')[0]
-                })
-            });
-            if (response.ok) {
-                document.getElementById('modal-create-invoice').style.display = 'none';
-                document.getElementById('form-create-invoice').reset();
-                loadInvoices();
-                loadDashboard();
-            } else {
-                alert('Failed to create invoice');
-            }
-        } catch (err) {
-            console.error('Error creating invoice', err);
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/invoices', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken
+          },
+          body: JSON.stringify({
+            customer_id: customerId,
+            invoice_number: 'INV-' + Math.floor(Math.random() * 100000),
+            description: document.getElementById('inv-desc').value,
+            total_amount: document.getElementById('inv-amount').value,
+            issue_date: new Date().toISOString().split('T')[0]
+          })
+        });
+        if (response.ok) {
+          document.getElementById('modal-create-invoice').style.display = 'none';
+          document.getElementById('form-create-invoice').reset();
+          loadInvoices();
+          loadDashboard();
+        } else {
+          alert('Failed to create invoice');
         }
+      } catch (err) {
+        console.error('Error creating invoice', err);
+      }
     }
 
     async function recordPayment() {
-        const invId = document.getElementById('pay-invoice-id').value;
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/invoices/' + invId + '/payments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken
-                },
-                body: JSON.stringify({
-                    amount: document.getElementById('pay-amount').value,
-                    payment_date: document.getElementById('pay-date').value
-                })
-            });
-            if (response.ok) {
-                document.getElementById('modal-record-payment').style.display = 'none';
-                document.getElementById('form-record-payment').reset();
-                loadInvoices();
-                loadDashboard();
-            } else {
-                alert('Failed to record payment');
-            }
-        } catch (err) {
-            console.error('Error recording payment', err);
+      const invId = document.getElementById('pay-invoice-id').value;
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/invoices/' + invId + '/payments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken
+          },
+          body: JSON.stringify({
+            amount: document.getElementById('pay-amount').value,
+            payment_date: document.getElementById('pay-date').value
+          })
+        });
+        if (response.ok) {
+          document.getElementById('modal-record-payment').style.display = 'none';
+          document.getElementById('form-record-payment').reset();
+          loadInvoices();
+          loadDashboard();
+        } else {
+          alert('Failed to record payment');
         }
+      } catch (err) {
+        console.error('Error recording payment', err);
+      }
     }
 
     async function saveAIConfig() {
-        const btn = document.getElementById('btn-save-ai');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-        btn.disabled = true;
+      const btn = document.getElementById('btn-save-ai');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      btn.disabled = true;
 
-        const isEnabled = aiToggle.checked;
-        const activeRadio = document.querySelector('input[name="active_provider"]:checked');
-        const provider = activeRadio ? activeRadio.value : 'mock';
-        
-        const openaiKey = document.getElementById('openai-api-key').value;
-        const geminiKey = document.getElementById('gemini-api-key').value;
+      const isEnabled = aiToggle.checked;
+      const activeRadio = document.querySelector('input[name="active_provider"]:checked');
+      const provider = activeRadio ? activeRadio.value : 'mock';
 
-        try {
-            const response = await fetch(LARAVEL_API_URL + '/settings', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + authToken
-                },
-                body: JSON.stringify({
-                    settings: {
-                        ai_enabled: isEnabled ? 'true' : 'false',
-                        ai_provider: provider,
-                        openai_api_key: openaiKey,
-                        gemini_api_key: geminiKey
-                    }
-                })
-            });
+      const openaiKey = document.getElementById('openai-api-key').value;
+      const geminiKey = document.getElementById('gemini-api-key').value;
 
-            if (response.ok) {
-                btn.innerHTML = '<i class="fas fa-check"></i> Saved Successfully!';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fas fa-save"></i> Save Configuration';
-                    btn.disabled = false;
-                }, 2000);
-            } else {
-                throw new Error("Failed to save");
+      try {
+        const response = await fetch('http://127.0.0.1:8001/api/system-settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + authToken
+          },
+          body: JSON.stringify({
+            settings: {
+              ai_enabled: isEnabled ? 'true' : 'false',
+              ai_provider: provider,
+              openai_api_key: openaiKey,
+              gemini_api_key: geminiKey
             }
-        } catch (error) {
-            alert('Error saving config: ' + error.message);
+          })
+        });
+
+        if (response.ok) {
+          btn.innerHTML = '<i class="fas fa-check"></i> Saved Successfully!';
+          setTimeout(() => {
             btn.innerHTML = '<i class="fas fa-save"></i> Save Configuration';
             btn.disabled = false;
+          }, 2000);
+        } else {
+          throw new Error("Failed to save");
         }
+      } catch (error) {
+        alert('Error saving config: ' + error.message);
+        btn.innerHTML = '<i class="fas fa-save"></i> Save Configuration';
+        btn.disabled = false;
+      }
     }
   </script>
+  <!-- Ask My AI Floating Button -->
+  <button class="ask-ai-fab" onclick="switchView('view-ai-hub', document.getElementById('nav-item-ai'))" title="Ask My AI">
+    <i class="fas fa-brain"></i>
+  </button>
 </body>
+
 </html>

@@ -37,7 +37,8 @@ class TenantController extends Controller
                 'owner_email' => $ownerEmail,
                 'pan' => $tenant->pan,
                 'users' => $userCount,
-                'status' => 'Active' // Hardcoded for now
+                'enabled_modules' => $tenant->enabled_modules ?? ['core_accounting', 'inventory'],
+                'status' => 'Active'
             ];
         });
 
@@ -50,23 +51,18 @@ class TenantController extends Controller
      */
     public function store(Request $request)
     {
-        // In a real app, we'd check if auth()->user()->isSuperAdmin()
-        // For prototype, we assume the Super Admin is calling this.
-        
         $validated = $request->validate([
             'business_name' => 'required|string|max:255',
-            // Regex for PAN: 5 letters, 4 numbers, 1 letter
             'pan' => ['nullable', 'string', 'max:15', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i', 'unique:tenants,pan'],
-            // Check email uniqueness in users table
             'email' => 'required|email|max:255|unique:users,email',
             'address' => 'nullable|string',
             'state' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'industry' => 'nullable|string|max:255',
-            // Regex for GSTIN: 2 numbers, 5 letters, 4 numbers, 1 letter, 1 alphanumeric, Z, 1 alphanumeric
             'gstin' => ['nullable', 'string', 'max:15', 'regex:/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i', 'unique:tenants,gstin'],
             'financial_year_start' => 'nullable|date',
+            'enabled_modules' => 'nullable|array'
         ]);
 
         \Illuminate\Support\Facades\DB::beginTransaction();
@@ -74,13 +70,14 @@ class TenantController extends Controller
         try {
             // 1. Create the Business Owner User
             $user = \App\Models\User::create([
-                'name' => 'Business Owner', // A default name, they can change it later
+                'name' => 'Business Owner',
                 'email' => $validated['email'],
-                'password' => \Illuminate\Support\Facades\Hash::make('password'), // Default password
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
                 'is_super_admin' => false,
             ]);
 
-            // 2. Create the Tenant (this also creates the sqlite DB and runs migrations)
+            // 2. Create the Tenant
+            $enabledModules = $validated['enabled_modules'] ?? ['core_accounting', 'inventory'];
             $tenant = Tenant::create([
                 'business_name' => $validated['business_name'],
                 'pan' => $validated['pan'] ?? null,
@@ -91,6 +88,7 @@ class TenantController extends Controller
                 'industry' => $validated['industry'] ?? null,
                 'gstin' => $validated['gstin'] ?? null,
                 'financial_year_start' => $validated['financial_year_start'] ?? null,
+                'enabled_modules' => $enabledModules
             ]);
 
             // Seed default master data for this new tenant
@@ -135,5 +133,32 @@ class TenantController extends Controller
             \Illuminate\Support\Facades\DB::rollBack();
             return response()->json(['message' => 'Failed to provision tenant: ' . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Enable or Disable Add-On Modules for a specific Tenant (Super Admin API)
+     */
+    public function updateModules(Request $request, $id)
+    {
+        $tenant = Tenant::find($id);
+        if (!$tenant) {
+            return response()->json(['message' => 'Tenant not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'enabled_modules' => 'required|array',
+            'enabled_modules.*' => 'string'
+        ]);
+
+        $tenant->enabled_modules = array_values(array_unique($validated['enabled_modules']));
+        $tenant->save();
+
+        return response()->json([
+            'message' => 'Tenant modules updated successfully',
+            'data' => [
+                'tenant_id' => $tenant->id,
+                'enabled_modules' => $tenant->enabled_modules
+            ]
+        ]);
     }
 }

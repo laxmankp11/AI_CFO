@@ -65,95 +65,124 @@ class GeminiService:
         user_context_str = json.dumps(user_context, indent=2) if user_context else "None provided"
         tenant_tax_str = json.dumps(tenant_tax, indent=2) if tenant_tax else "No specific tax settings configured"
 
-        system_prompt = f"""
-        You are an expert Virtual CFO. Your job is to extract accounting details from the user's transcript and generate a proper double-entry journal (Debits and Credits must balance).
+        # Active Memory Injection
+        from services.memory_engine import MemoryEngine
+        memory_engine = MemoryEngine(db_path=db_path)
+        active_memory_graph = memory_engine.enrich_context(transcript)
         
-        IMPORTANT RAG CONTEXT:
-        Active Chart of Accounts:
-        {mock_active_coa}
+        user_context_str += f"\n\n{active_memory_graph}"
+
+        from services.agent_router import AgentRouter
+        from services.agents.expense_agent import ExpenseAgent
+        from services.agents.reporting_agent import ReportingAgent
+        from services.agents.advisory_agent import AdvisoryAgent
         
-        Active Vendors/Customers:
-        {mock_active_vendors}
-        
-        GLOBAL TAX ENGINE (Level 1):
-        {mock_global_taxes}
-        
-        TENANT TAX CONFIGURATION (Level 2):
-        {tenant_tax_str}
-        
-        Strictly use the provided UUIDs if you find a match. Do not do internal math.
-        If the transaction is an owner investment or capital injection, categorize it under an Equity account.
+        router = AgentRouter(self.client)
+        decision = router.route(transcript, user_context)
+        print(f"Agent Router Decision: {decision.agent_type} - {decision.reasoning}")
 
-        CLARIFICATION ENGINE (CRITICAL RULES):
-        You MUST ask for clarification (set clarification_needed=true and provide clarification_question) if any of the following are true:
-        1. If the user mentions purchasing something over ₹50,000 but does NOT explicitly mention GST or "inclusive of tax", you MUST ask "Is GST included in this amount or do you have a supplier tax invoice?".
-        2. If Role="Accountant" and they say "I invested", this is ambiguous. You MUST ask "Who invested the capital?".
-        3. If Role="Manager" and they say "I invested", ask for clarification on who contributed the capital.
-        4. If it's a vendor payment but you cannot figure out which vendor it is.
-
-        MULTI-LINE TAX SPLITS:
-        If the user explicitly states "including 18% GST" (or similar), or the transaction clearly implies GST according to the Tax Engine rules:
-        - Generate one LineItem for the Gross Amount (e.g., Bank/Cash).
-        - Generate one LineItem for the Base Amount (e.g., Expense/Asset).
-        - Generate LineItems for CGST/SGST/IGST as applicable based on the rules.
-
-        OPERATIONS MANAGER (MODULES):
-        - By default, module is 'finance'.
-        - If the user asks to "create an invoice", "generate an invoice", or "bill a customer" for products/services:
-          1. Set module = 'sales'
-          2. Set intent = 'sales_invoice'
-          3. Populate `operational_data` with the items sold (item_name, quantity, unit_price).
-          4. You MUST STILL generate the financial `line_items` for this invoice (e.g., Debit Accounts Receivable, Credit Sales Revenue).
-        """
-
-        # Build the contents array
-        parts = [{"text": system_prompt}]
-        if audio_base64:
-            import base64
-            # We assume it's webm as sent by our frontend
-            parts.append({
-                "inline_data": {
-                    "mime_type": "audio/webm",
-                    "data": audio_base64
-                }
-            })
-            parts.append({"text": "\n\nPlease extract the transaction details from the audio provided."})
-            if transcript and transcript != "Mock decoded audio transcript":
-                parts.append({"text": f"\n\nHere is a transcribed version if helpful: {transcript}"})
-        else:
-            parts.append({"text": "\n\nTranscript:\n" + transcript})
-
-        # Call real Gemini API with Structured Outputs (json_schema)
         try:
-            response = self.client.models.generate_content(
-                model='gemini-3.5-flash',
-                contents=[
-                    {"role": "user", "parts": parts}
-                ],
-                config={
-                    'response_mime_type': 'application/json',
-                    'response_schema': TransactionExtraction,
-                },
-            )
-            
-            # response.text is guaranteed to be a JSON string matching the Pydantic schema
-            import json
-            extraction_dict = json.loads(response.text)
-            extraction = TransactionExtraction(**extraction_dict)
-            
+            if decision.agent_type == "compound":
+                # === COMPOUND WORKFLOW: Planning Agent → Orchestrator ===
+                from services.agents.planning_agent import BusinessWorkflowPlanner
+                from services.workflow_orchestrator import WorkflowOrchestrator
+                from services.execution_validator import ExecutionValidator
+
+                print("\n🔀 Compound prompt detected. Invoking Business Workflow Planner...")
+                planner = BusinessWorkflowPlanner(self.client)
+                plan = planner.plan(transcript, user_context)
+
+                print(f"📋 Raw Execution Plan: {len(plan.steps)} steps | Compound: {plan.is_compound}")
+                print(f"   Reasoning: {plan.reasoning}")
+
+                if plan.is_compound and plan.steps:
+                    # Validate and correct the execution plan
+                    validator = ExecutionValidator()
+                    validated_plan = validator.validate(plan)
+                    
+                    # Update plan steps with validator corrected steps
+                    plan.steps = validated_plan.corrected_steps
+
+                    orchestrator = WorkflowOrchestrator(self.client)
+                    result = orchestrator.execute(
+                        plan=plan,
+                        user_context_str=user_context_str,
+                        mock_active_coa=mock_active_coa,
+                        mock_active_vendors=mock_active_vendors,
+                        mock_global_taxes=mock_global_taxes,
+                        tenant_tax_str=tenant_tax_str,
+                        db_path=db_path,
+                        tenant_id=tenant_id,
+                        original_prompt=transcript,
+                        validator_corrections=validated_plan.corrections,
+                        audio_base64=audio_base64
+                    )
+                    return result
+                else:
+                    # Planner said it's not actually compound — fall through to ExpenseAgent
+                    print("   Business Workflow Planner override: Not compound. Falling through to ExpenseAgent.")
+                    agent = ExpenseAgent(self.client)
+                    extraction = agent.process_transaction(
+                        transcript=transcript,
+                        user_context_str=user_context_str,
+                        mock_active_coa=mock_active_coa,
+                        mock_active_vendors=mock_active_vendors,
+                        mock_global_taxes=mock_global_taxes,
+                        tenant_tax_str=tenant_tax_str,
+                        audio_base64=audio_base64
+                    )
+
+            elif decision.agent_type == "reporting":
+                agent = ReportingAgent(self.client)
+                report_html = agent.generate_report(transcript, user_context_str, db_path)
+                return {
+                    "status": "report_generated",
+                    "data": {
+                        "ai_extraction_id": "ext_reporting_123",
+                        "transcript": transcript,
+                        "ai_message": report_html
+                    }
+                }
+            elif decision.agent_type == "advisory":
+                agent = AdvisoryAgent(self.client)
+                report_html = agent.provide_advice(transcript, user_context_str, db_path)
+                return {
+                    "status": "report_generated",
+                    "data": {
+                        "ai_extraction_id": "ext_advisory_123",
+                        "transcript": transcript,
+                        "ai_message": report_html
+                    }
+                }
+            else:
+                # Default to ExpenseAgent for expenses, sales, follow_ups, etc for MVP
+                agent = ExpenseAgent(self.client)
+                extraction = agent.process_transaction(
+                    transcript=transcript,
+                    user_context_str=user_context_str,
+                    mock_active_coa=mock_active_coa,
+                    mock_active_vendors=mock_active_vendors,
+                    mock_global_taxes=mock_global_taxes,
+                    tenant_tax_str=tenant_tax_str,
+                    audio_base64=audio_base64
+                )
         except Exception as e:
             print(f"Gemini API Error: {e}")
             raise
+
+        # Calculate Confidence based on Line Items
+        aggregate_score = ScoringService.calculate_confidence(extraction)
 
         # Evaluate Clarification Status
         if extraction.clarification_needed and extraction.clarification_question:
             status = "clarification_needed"
             ai_message = extraction.clarification_question
         else:
-            # Calculate Confidence based on Line Items
-            aggregate_score = ScoringService.calculate_confidence(extraction)
             status = "pending_confirmation" if aggregate_score >= 0.85 else "clarification_needed"
-            ai_message = "I have extracted the details. Confirm?" if status == "pending_confirmation" else "I need a bit more detail to record this properly."
+            if status == "pending_confirmation":
+                ai_message = "I have extracted the details. Confirm?"
+            else:
+                ai_message = extraction.clarification_question if extraction.clarification_question else "I couldn't fully understand the financial transaction. Could you provide more details like the amount, category, and what it was for?"
 
         
         return {

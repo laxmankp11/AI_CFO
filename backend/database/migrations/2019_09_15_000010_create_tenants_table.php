@@ -28,6 +28,7 @@ class CreateTenantsTable extends Migration
             $table->string('pan')->nullable();
             $table->string('gstin')->nullable();
             $table->date('financial_year_start')->nullable();
+            $table->json('enabled_modules')->nullable();
 
             $table->timestamps();
             $table->json('data')->nullable();

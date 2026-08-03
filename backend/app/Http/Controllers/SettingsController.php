@@ -18,7 +18,7 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function update(Request $request)
     {
         $validated = $request->validate([
             'settings' => 'required|array',
@@ -33,5 +33,12 @@ class SettingsController extends Controller
         }
 
         return response()->json(['message' => 'Settings updated successfully']);
+    }
+
+    public function accounts()
+    {
+        return response()->json([
+            'data' => DB::table('accounts')->get()
+        ]);
     }
 }

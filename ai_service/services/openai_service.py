@@ -13,7 +13,7 @@ class OpenAIService:
         if not self.is_mock:
             self.client = OpenAI(api_key=api_key)
 
-    def extract_transaction_from_text(self, transcript: str, tenant_id: str, audio_base64: str = None) -> dict:
+    def extract_transaction_from_text(self, transcript: str, tenant_id: str, audio_base64: str = None, user_context: dict = None) -> dict:
         """
         Executes the RAG pipeline and calls OpenAI structured outputs.
         """
@@ -49,8 +49,14 @@ class OpenAIService:
         mock_active_coa = "\n".join(active_coa) if active_coa else "- (No accounts found)"
         mock_active_vendors = "\n".join(active_vendors) if active_vendors else "- (No suppliers found)"
 
+        user_context_str = str(user_context) if user_context else "None"
+
         system_prompt = f"""
         You are an expert Virtual CFO. Extract accounting details from the user's transcript.
+        
+        USER CONTEXT (Role, Preferences, and Previous Clarification Extraction State):
+        {user_context_str}
+
         IMPORTANT RAG CONTEXT:
         Active Chart of Accounts:
         {mock_active_coa}
@@ -59,6 +65,9 @@ class OpenAIService:
         {mock_active_vendors}
         
         Strictly use the provided UUIDs if you find a match. Do not do internal math.
+        
+        CLARIFICATION ENGINE (CRITICAL RULES):
+        1. If the intent is entirely unknown or you cannot determine what financial transaction the user is trying to record (e.g., they ask to "add a new accountant" or just say hello), set clarification_needed=true and ask a helpful question in clarification_question like "It seems you want to do something outside of recording a transaction. I am currently designed to record financial transactions, could you provide details for a journal entry, invoice, or bill instead?"
         """
 
         if self.is_mock:
@@ -130,8 +139,14 @@ class OpenAIService:
         aggregate_score = ScoringService.calculate_confidence(extraction)
         
         status = "pending_confirmation" if aggregate_score >= 0.85 else "clarification_needed"
-        ai_message = "I have extracted the details. Confirm?" if status == "pending_confirmation" else "I need a bit more detail to record this properly."
-        
+        if status == "pending_confirmation":
+            ai_message = "I have extracted the details. Confirm?"
+        else:
+            # Note: openai schema extraction obj might not have clarification_question if not in schema.
+            # Assuming it is in TransactionExtraction schema:
+            ai_message = getattr(extraction, 'clarification_question', None)
+            if not ai_message:
+                ai_message = "I couldn't fully understand the financial transaction. Could you provide more details like the amount, category, and what it was for?"
         return {
             "status": status,
             "data": {

@@ -1,6 +1,11 @@
 from pydantic import BaseModel, Field
 from typing import Optional, Literal, Dict
 
+class ExplainabilityTrace(BaseModel):
+    rule_code: str = Field(description="The unique code of the policy rule applied (e.g., AR-008).")
+    description: str = Field(description="Human-readable explanation of why this rule triggered.")
+    decision: str = Field(description="The outcome of the rule (e.g., 'Approved', 'Rejected', 'Capitalized').")
+
 class ExtractedEntity(BaseModel):
     id: Optional[str] = Field(None, description="UUID of the existing entity if matched exactly from context.")
     name: str = Field(description="Name of the vendor, customer, or employee.")
@@ -27,6 +32,10 @@ class TransactionExtraction(BaseModel):
     clarification_needed: bool = Field(False, description="Set to true if you are missing critical accounting information.")
     clarification_question: Optional[str] = Field(None, description="The specific question you want to ask the user to clarify (e.g., 'Is GST included in this?').")
     
+    approval_required: bool = Field(False, description="Set to true if transaction requires manual approval.")
+    approval_reasons: list[str] = Field(default_factory=list, description="Reasons why approval is required.")
+
+    
     intent: Literal["expense", "income", "asset_purchase", "transfer", "payment_receipt", "vendor_payment", "capital_injection", "sales_invoice", "unknown"] = Field(
         description="The primary accounting intent of this transaction."
     )
@@ -35,7 +44,11 @@ class TransactionExtraction(BaseModel):
     
     operational_data: Optional[OperationalData] = Field(None, description="Business document details like item quantities and rates.")
     line_items: list[LineItem] = Field(default_factory=list, description="The double-entry bookkeeping lines.")
+    explainability_traces: list[ExplainabilityTrace] = Field(default_factory=list, description="Traces of AI decisions and policies applied.")
     
     payment_channel: Optional[Literal["cash", "bank_transfer", "upi", "credit_card"]] = Field(
         None, description="How the transaction was paid or received."
+    )
+    narration: Optional[str] = Field(
+        None, description="A detailed, human-readable summary of the entire transaction (e.g., 'Investment of 10000 by John Doe deposited in ICICI bank')."
     )

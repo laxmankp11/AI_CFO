@@ -1,0 +1,29 @@
+{
+  "audit_id": "46b64993-3789-4fa0-836f-c852a4cea3ac",
+  "tenant_id": "tenant_test_safety_gates",
+  "timestamp": "2026-08-03T08:40:34.021361Z",
+  "original_prompt": "Test workflow prompt",
+  "detected_intent": "compound",
+  "planner_output": {
+    "is_compound": true,
+    "steps": []
+  },
+  "validator_corrections": [
+    {
+      "rule": "DEP_INVERSION_FIX",
+      "description": "Fixed inverted step ordering"
+    }
+  ],
+  "step_results": [],
+  "ai_model_used": "gemini-3.6-flash",
+  "ai_provider": "gemini",
+  "overall_confidence": 0.0,
+  "workflow_state": "Draft",
+  "prompt_version": "v1.0",
+  "policy_version": "v1.0",
+  "execution_duration_ms": 0,
+  "llm_time_ms": 0,
+  "user_approval": "pending",
+  "rollback_status": "none",
+  "rollback_details": null
+}

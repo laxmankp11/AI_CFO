@@ -56,8 +56,29 @@ class JournalEntryController extends Controller
             foreach ($validated['line_items'] as $line) {
                 $accountId = $line['account_id'];
                 if (!$accountId) {
-                    $fallback = DB::table('accounts')->first();
-                    $accountId = $fallback->id ?? Str::uuid()->toString();
+                    // Try fuzzy match by name
+                    $match = DB::table('accounts')
+                        ->where('name', 'like', '%' . $line['account_name'] . '%')
+                        ->first();
+                    
+                    if ($match) {
+                        $accountId = $match->id;
+                    } else {
+                        // Create new account if not found
+                        $accountId = Str::uuid()->toString();
+                        $isBank = preg_match('/bank|cash|hdfc|sbi|icici/i', $line['account_name'] ?? '');
+                        $maxCode = DB::table('accounts')->max('code');
+                        $newCode = str_pad((int)$maxCode + 1, 4, '0', STR_PAD_LEFT);
+
+                        DB::table('accounts')->insert([
+                            'id' => $accountId,
+                            'code' => $newCode,
+                            'name' => $line['account_name'],
+                            'type' => $isBank ? 'Asset' : 'Expense',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
                 }
 
                 DB::table('journal_lines')->insert([

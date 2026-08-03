@@ -84,5 +84,78 @@ def test_sales_invoice_extraction():
         traceback.print_exc()
         return False
 
+def test_purchase_bill_extraction():
+    print("\n--- 2. Testing AI Purchase Extraction ---")
+    
+    # 1. Get the GEMINI API KEY from the central database
+    try:
+        conn = sqlite3.connect(os.path.join(workspace_dir, 'backend/database/database.sqlite'))
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM system_settings WHERE key = 'gemini_api_key'")
+        row = cursor.fetchone()
+        conn.close()
+        
+        if not row:
+            print("❌ GEMINI API KEY not found in system_settings!")
+            return False
+            
+        api_key = row[0]
+    except Exception as e:
+        print(f"❌ Failed to read database: {e}")
+        return False
+        
+    # 2. Find the tenant ID
+    try:
+        conn = sqlite3.connect(os.path.join(workspace_dir, 'backend/database/database.sqlite'))
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM tenants LIMIT 1")
+        row = cursor.fetchone()
+        conn.close()
+        
+        if not row:
+            print("❌ No tenant found in the database!")
+            return False
+            
+        tenant_id = row[0]
+    except Exception as e:
+        print(f"❌ Failed to find tenant: {e}")
+        return False
+
+    # 3. Initialize GeminiService
+    service = GeminiService(api_key=api_key)
+    
+    # 4. Run the test prompt
+    prompt = "We received a bill from Amazon Web Services for server hosting for ₹50,000."
+    print(f"\nPrompt: '{prompt}'")
+    
+    user_context = {
+        "id": 2,
+        "name": "Business Owner",
+        "email": "info@see.com",
+        "is_super_admin": False,
+        "tenant_id": tenant_id
+    }
+    
+    print("Calling Gemini API...")
+    try:
+        result = service.extract_transaction_from_text(prompt, tenant_id, user_context=user_context)
+        print("\n✅ AI Extraction Successful! Result:")
+        print(json.dumps(result, indent=2))
+        
+        # Verify the extraction
+        assert result['data']['extraction']['module'] == 'purchases', "Module should be purchases"
+        assert result['data']['extraction']['intent'] in ['expense', 'vendor_payment'], "Intent should be expense or vendor_payment"
+        assert 'Amazon Web Services' in result['data']['extraction']['entity']['name'] or 'AWS' in result['data']['extraction']['entity']['name'], "Vendor name should be extracted"
+        assert result['data']['extraction']['total_amount'] == 50000, "Amount should be 50000"
+        
+        print("\n✅ All AI Assertions Passed! Operations Manager (Purchases) is working flawlessly.")
+        return True
+    except Exception as e:
+        print(f"\n❌ AI Extraction Failed or Assertions Failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
 if __name__ == "__main__":
-    test_sales_invoice_extraction()
+    if test_sales_invoice_extraction():
+        test_purchase_bill_extraction()

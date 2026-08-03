@@ -12,6 +12,41 @@ The AI Service is a standalone microservice built with **Python 3.12** and **Fas
 
 ---
 
+## 4.0.1 Enterprise Multi-Agent & Orchestration Architecture
+
+To support compound, multi-step business prompts (e.g. Master Data Setup + Purchases + Sales + Accounting Posting in a single utterance), the AI system employs a **Planning Agent & Workflow Orchestrator** pattern:
+
+```
+                                  AI CFO
+                                    │
+                              Intent Router
+                                    │
+                             Planning Agent
+                                    │
+                           Workflow Orchestrator
+                                    │
+       ┌─────────────┬─────────────┼─────────────┬─────────────┐
+       │             │             │             │             │
+ Product Agent Customer Agent Purchase Agent Sales Agent Reporting Agent
+       │             │             │             │             │
+       └─────────────┴─────────────┼─────────────┴─────────────┘
+                                    │
+                             Accounting Engine
+                                    │
+                            Double Entry Ledger
+                                    │
+                             Reporting Engine
+```
+
+### Architectural Layer Responsibilities:
+1. **Intent Router**: Determines overall context and delegates complex compound requests to the Planning Agent.
+2. **Planning Agent**: Decomposes multi-intent prompts into an ordered, dependency-aware DAG (Directed Acyclic Graph) of execution steps.
+3. **Workflow Orchestrator**: Manages stateful execution, validation, atomic rollback, and audit logging across step boundaries.
+4. **Domain Agents (Product, Customer, Purchase, Sales, Reporting)**: Specialized worker agents with strict single-responsibility boundaries.
+5. **Accounting & Reporting Engine**: Enforces rigid double-entry validation ($\text{Debits} = \text{Credits}$) and immutability.
+
+---
+
 ## 4.1 Microservice Boundaries
 
 - **Input:** Receives authenticated requests from Laravel containing Base64 Audio, Text, or Image URIs, along with the `tenant_id`.
