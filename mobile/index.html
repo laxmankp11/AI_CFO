@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI CFO - Mobile Executive Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="mobile-wrapper">
+
+    <!-- Top Header -->
+    <header class="mobile-header">
+      <div class="mobile-brand">
+        <i class="fas fa-brain" style="color: var(--emerald-primary);"></i>
+        AI CFO <span>Mobile</span>
+      </div>
+      <div class="demo-badge" onclick="toggleDemoMode()" id="demo-mode-btn">
+        <i class="fas fa-magic"></i> <span id="demo-label">ABC Electronics Demo</span>
+      </div>
+    </header>
+
+    <!-- Toast Banner -->
+    <div class="toast-banner" id="toast-banner">
+      <i class="fas fa-check-circle"></i> <span id="toast-text">Toast message</span>
+    </div>
+
+    <!-- SCREEN 1: Executive Workspace -->
+    <section id="screen-workspace" class="mobile-screen active">
+      
+      <div class="m-greeting">
+        <h2 id="m-greeting-text">👋 Good Evening, Laxman</h2>
+        <div class="m-health-badge">
+          <i class="fas fa-heartbeat"></i> Health: <span id="m-health-score">95</span> / 100
+        </div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.4rem;" id="m-health-msg">Your business is in excellent shape today.</p>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="m-kpi-grid">
+        <div class="m-kpi-card">
+          <div class="m-kpi-label">Cash Available</div>
+          <div class="m-kpi-val" id="m-cash-val">₹24.8 Lakh</div>
+        </div>
+        <div class="m-kpi-card">
+          <div class="m-kpi-label">Cash Runway</div>
+          <div class="m-kpi-val" id="m-runway-val">245 Days</div>
+        </div>
+        <div class="m-kpi-card">
+          <div class="m-kpi-label">Money Earned</div>
+          <div class="m-kpi-val" style="color:var(--emerald-primary);" id="m-earned-val">₹6.4 Lakh</div>
+        </div>
+        <div class="m-kpi-card">
+          <div class="m-kpi-label">Money Spent</div>
+          <div class="m-kpi-val" style="color:var(--danger-red);" id="m-spent-val">₹2.1 Lakh</div>
+        </div>
+      </div>
+
+      <!-- Today's Priorities -->
+      <div style="font-weight:600; font-size:0.9rem; margin-bottom:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">
+        <i class="fas fa-tasks" style="color:var(--accent-purple);"></i> Today's Priorities
+      </div>
+
+      <div id="m-priorities-container">
+        <!-- Loaded via JS -->
+      </div>
+
+    </section>
+
+    <!-- SCREEN 2: AI Voice & Chat -->
+    <section id="screen-chat" class="mobile-screen">
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-bubble ai">
+            👋 Hi Laxman! I'm your AI CFO. Speak or type anything (e.g. <em>"Rahul paid ₹5 lakh today"</em> or <em>"Can I hire two developers?"</em>).
+          </div>
+        </div>
+
+        <div id="attach-preview-container"></div>
+
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem;">
+          <button style="background:rgba(255,255,255,0.05); border:1px solid var(--border-glass); color:var(--text-muted); padding:0.3rem 0.6rem; border-radius:12px; font-size:0.75rem; cursor:pointer;" onclick="quickPrompt('Rahul paid ₹5 lakh today')">Rahul paid ₹5L</button>
+          <button style="background:rgba(255,255,255,0.05); border:1px solid var(--border-glass); color:var(--text-muted); padding:0.3rem 0.6rem; border-radius:12px; font-size:0.75rem; cursor:pointer;" onclick="quickPrompt('Can I hire two developers?')">Can I hire 2 devs?</button>
+        </div>
+
+        <div class="chat-input-bar">
+          <button class="voice-mic-btn" id="attach-btn" style="background:rgba(255,255,255,0.1); box-shadow:none; color:var(--text-muted); font-size:0.9rem; width:38px; height:38px;" onclick="triggerFileAttachment()" title="Attach Invoice/Camera">
+            <i class="fas fa-camera"></i>
+          </button>
+          <input type="file" id="file-input" style="display:none;" onchange="handleFileSelected(event)">
+
+          <button class="voice-mic-btn" id="mic-btn" onclick="toggleVoiceRecording()" title="Tap to Speak">
+            <i class="fas fa-microphone"></i>
+          </button>
+          <input type="text" id="chat-input" placeholder="Speak or type a prompt..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+          <button style="background:var(--accent-purple); border:none; color:white; width:36px; height:36px; border-radius:50%; cursor:pointer;" onclick="sendChatMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: Notifications & Approvals -->
+    <section id="screen-notifications" class="mobile-screen">
+      <div style="font-weight:600; font-size:0.9rem; margin-bottom:1rem; color:var(--text-muted); text-transform:uppercase;">
+        <i class="fas fa-bell" style="color:var(--warning-amber);"></i> Color-Coded Alerts
+      </div>
+
+      <!-- Critical Alert (Red) -->
+      <div class="m-card" style="border-left:3px solid var(--danger-red);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#fca5a5;"><i class="fas fa-exclamation-circle"></i> 🔴 Critical Compliance</strong>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Due in 5 Days</span>
+        </div>
+        <p style="margin-top:0.4rem; font-size:0.85rem;">GST Filing deadline approaching for Q2. Projected liability: ₹1.4 Lakh.</p>
+      </div>
+
+      <!-- Overdue AR Alert (Yellow) -->
+      <div class="m-card" style="border-left:3px solid #f59e0b;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#fcd34d;"><i class="fas fa-clock"></i> 🟡 Overdue AR Warning</strong>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Rahul Technologies</span>
+        </div>
+        <p style="margin-top:0.4rem; font-size:0.85rem;">Invoice #INV-ABC-1088 is past due (₹4,20,000).</p>
+        <div class="m-card-btns">
+          <button onclick="showToast('Calling Rahul Technologies...')"><i class="fas fa-phone"></i> Call</button>
+          <button onclick="showToast('Reminder sent to Rahul Technologies!')"><i class="fas fa-paper-plane"></i> Send Reminder</button>
+        </div>
+      </div>
+
+      <!-- Opportunity Alert (Blue) -->
+      <div class="m-card" style="border-left:3px solid var(--accent-blue);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#93c5fd;"><i class="fas fa-lightbulb"></i> 🔵 Early Payment Discount</strong>
+          <span style="font-size:0.7rem; color:var(--emerald-primary);">Save ₹12,500</span>
+        </div>
+        <p style="margin-top:0.4rem; font-size:0.85rem;">Pay Dell India 5 days early on Invoice #DEL-9012 to claim a 2% cash discount.</p>
+        <div class="m-card-btns">
+          <button style="background:var(--accent-blue);" onclick="showToast('Scheduled payment to Dell India with ₹12,500 savings!')"><i class="fas fa-bolt"></i> Execute Early Pay</button>
+        </div>
+      </div>
+
+      <!-- PolicyEngine Human Approval Queue Section -->
+      <div style="font-weight:600; font-size:0.9rem; margin:1.25rem 0 0.75rem 0; color:var(--text-muted); text-transform:uppercase;">
+        <i class="fas fa-user-shield" style="color:var(--accent-purple);"></i> PolicyEngine Approval Queue
+      </div>
+
+      <div class="policy-queue-card" id="policy-card-1">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#e9d5ff;"><i class="fas fa-exclamation-triangle"></i> New Vendor Verification</strong>
+          <span style="font-size:0.65rem; background:rgba(239,68,68,0.2); color:#fca5a5; padding:0.1rem 0.4rem; border-radius:8px;">High Risk Gate</span>
+        </div>
+        <p style="margin-top:0.4rem; font-size:0.8rem; color:var(--text-main);">Create Vendor entry for <em>'Nexus Tech Solutions'</em> with GSTIN 27AABCN9921Z1.</p>
+        <div class="m-card-btns">
+          <button style="background:var(--emerald-primary);" onclick="resolveApproval('policy-card-1', 'Approved Vendor Nexus Tech Solutions!')"><i class="fas fa-check"></i> Approve</button>
+          <button style="background:rgba(239,68,68,0.2); border-color:var(--danger-red); color:#fca5a5;" onclick="resolveApproval('policy-card-1', 'Rejected Vendor entry.')"><i class="fas fa-times"></i> Reject</button>
+        </div>
+      </div>
+
+      <div class="policy-queue-card" id="policy-card-2">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#e9d5ff;"><i class="fas fa-shield-alt"></i> High-Value Cash Disbursement</strong>
+          <span style="font-size:0.65rem; background:rgba(245,158,11,0.2); color:#fcd34d; padding:0.1rem 0.4rem; border-radius:8px;">Threshold > ₹1 Lakh</span>
+        </div>
+        <p style="margin-top:0.4rem; font-size:0.8rem; color:var(--text-main);">NEFT Payment of ₹1,85,000 to Apex Logistics for Q2 Freight charges.</p>
+        <div class="m-card-btns">
+          <button style="background:var(--emerald-primary);" onclick="resolveApproval('policy-card-2', 'Approved Disbursement ₹1,85,000!')"><i class="fas fa-check"></i> Approve</button>
+          <button style="background:rgba(239,68,68,0.2); border-color:var(--danger-red); color:#fca5a5;" onclick="resolveApproval('policy-card-2', 'Disbursement Canceled.')"><i class="fas fa-times"></i> Reject</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: Profile & Settings -->
+    <section id="screen-profile" class="mobile-screen">
+      <div style="text-align:center; padding:1rem 0;">
+        <div style="width:70px; height:70px; border-radius:50%; background:var(--emerald-glow); display:flex; align-items:center; justify-content:center; margin:0 auto 0.75rem auto; font-size:1.8rem;">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <h3 style="font-family:var(--font-heading);" id="user-display-name">Laxman Parmar</h3>
+        <p style="font-size:0.8rem; color:var(--emerald-primary);" id="company-display-subtitle">Active: ABC Electronics Pvt Ltd (Demo)</p>
+      </div>
+
+      <!-- Tenant Switcher Card -->
+      <div class="m-card">
+        <div style="font-weight:600; margin-bottom:0.5rem; display:flex; justify-content:space-between; align-items:center;">
+          <span><i class="fas fa-building" style="color:var(--accent-purple);"></i> Active Tenant</span>
+          <button style="font-size:0.75rem; background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); color:white; padding:0.25rem 0.5rem; border-radius:6px; cursor:pointer;" onclick="openTenantModal()">Switch Tenant</button>
+        </div>
+        <p style="font-size:0.85rem; font-weight:600;" id="active-tenant-name">ABC Electronics Pvt Ltd</p>
+        <p style="font-size:0.75rem; color:var(--text-muted);" id="active-tenant-sub">GSTIN: 27AAACA12341Z1 • Tenant ID: #1</p>
+      </div>
+
+      <div class="m-card">
+        <div style="font-weight:600; margin-bottom:0.5rem;"><i class="fas fa-shield-alt" style="color:var(--emerald-primary);"></i> Security & Policy Gates</div>
+        <p style="font-size:0.8rem; color:var(--text-muted);">Row-level tenant data isolation active. All high-value AI executions require explicit human approval.</p>
+      </div>
+
+      <button style="width:100%; background:linear-gradient(135deg, var(--emerald-primary), var(--accent-purple)); border:none; color:white; padding:0.85rem; border-radius:12px; font-weight:600; cursor:pointer; font-size:0.9rem;" onclick="showSetupWizard()">
+        <i class="fas fa-magic"></i> Run 5-Minute Guided Setup
+      </button>
+    </section>
+
+    <!-- BOTTOM NAVIGATION TAB BAR -->
+    <nav class="bottom-nav">
+      <div class="nav-tab active" onclick="switchTab('screen-workspace', this)">
+        <i class="fas fa-th-large"></i>
+        <span>Workspace</span>
+      </div>
+      <div class="nav-tab" onclick="switchTab('screen-chat', this)">
+        <i class="fas fa-comment-dots"></i>
+        <span>AI Chat</span>
+      </div>
+      <div class="nav-tab" onclick="switchTab('screen-notifications', this)">
+        <i class="fas fa-bell"></i>
+        <span>Alerts</span>
+      </div>
+      <div class="nav-tab" onclick="switchTab('screen-profile', this)">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </div>
+    </nav>
+
+    <!-- AI TOUR OVERLAY (First Login) -->
+    <div class="tour-overlay" id="tour-overlay" style="display:none;">
+      <div class="tour-box">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">🤖</div>
+        <h3>Hi Laxman 👋 I'm your AI CFO</h3>
+        <p id="tour-step-text">I manage your ledger, predict cash runway, and give you daily strategic decisions so you don't have to navigate ERP menus.</p>
+        <button class="tour-btn" onclick="nextTourStep()" id="tour-btn">Take 60-Second Tour</button>
+      </div>
+    </div>
+
+    <!-- 5-STEP GUIDED SETUP WIZARD MODAL -->
+    <div class="modal-overlay" id="wizard-modal" style="display:none;">
+      <div class="modal-card">
+        <div class="stepper-header">
+          <h4 style="font-family:var(--font-heading); font-size:1.1rem; color:var(--emerald-primary);">5-Minute Guided Setup</h4>
+          <div class="stepper-dots">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-dot" id="dot-3"></div>
+            <div class="step-dot" id="dot-4"></div>
+            <div class="step-dot" id="dot-5"></div>
+          </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="wizard-step" id="w-step-1">
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Step 1: Business Profile</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Enter your registered business name to initialize your ledger context.</p>
+          <div class="form-group">
+            <label>Business Name</label>
+            <input type="text" class="form-control" id="w-biz-name" value="ABC Electronics Pvt Ltd">
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wizard-step" id="w-step-2" style="display:none;">
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Step 2: Select Industry</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Tailors double-entry accounting rules to your business sector.</p>
+          <div class="form-group">
+            <label>Industry Category</label>
+            <select class="form-control" id="w-industry">
+              <option value="Retail & Consumer Electronics">Retail & Consumer Electronics</option>
+              <option value="IT & Professional Services">IT & Professional Services</option>
+              <option value="Manufacturing & Assembly">Manufacturing & Assembly</option>
+              <option value="Wholesale & Distribution">Wholesale & Distribution</option>
+              <option value="CA & Advisory Firm">CA & Advisory Firm</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="wizard-step" id="w-step-3" style="display:none;">
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Step 3: GST & Compliance</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Enable automated GST liability tracking & filing alerts.</p>
+          <div class="form-group">
+            <label>GSTIN (Optional)</label>
+            <input type="text" class="form-control" id="w-gstin" value="27AAACA12341Z1">
+          </div>
+          <div class="form-group" style="margin-top:0.75rem;">
+            <label>Filing Frequency</label>
+            <select class="form-control" id="w-gst-freq">
+              <option value="Monthly (GSTR-1 & 3B)">Monthly (GSTR-1 & 3B)</option>
+              <option value="Quarterly (QRMP Scheme)">Quarterly (QRMP Scheme)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="wizard-step" id="w-step-4" style="display:none;">
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Step 4: Bank & Liquidity</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Configure primary cash balance for runway calculations.</p>
+          <div class="form-group">
+            <label>Primary Bank Name</label>
+            <input type="text" class="form-control" id="w-bank-name" value="HDFC Bank Current Account">
+          </div>
+          <div class="form-group" style="margin-top:0.75rem;">
+            <label>Starting Liquid Balance (₹)</label>
+            <input type="number" class="form-control" id="w-cash-bal" value="2480000">
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="wizard-step" id="w-step-5" style="display:none;">
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Step 5: Data Import / Seed</h3>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;">Choose how to populate your executive workspace data.</p>
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <label style="background:rgba(16,185,129,0.15); border:1px solid var(--emerald-primary); padding:0.75rem; border-radius:10px; cursor:pointer; font-size:0.8rem;">
+              <input type="radio" name="w-data-mode" value="demo" checked> <strong>Load Pre-seeded Demo Data</strong> (Explore instantly)
+            </label>
+            <label style="background:rgba(255,255,255,0.05); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px; cursor:pointer; font-size:0.8rem;">
+              <input type="radio" name="w-data-mode" value="blank"> <strong>Start Clean Live Ledger</strong> (Zero starting records)
+            </label>
+          </div>
+        </div>
+
+        <!-- Wizard Nav Buttons -->
+        <div style="display:flex; justify-content:space-between; margin-top:0.5rem;">
+          <button style="background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); color:white; padding:0.5rem 1rem; border-radius:8px; cursor:pointer; font-size:0.85rem;" id="w-back-btn" onclick="wizardBack()">Back</button>
+          <button style="background:var(--emerald-primary); border:none; color:white; padding:0.5rem 1.2rem; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.85rem;" id="w-next-btn" onclick="wizardNext()">Next Step</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TENANT SWITCHER MODAL -->
+    <div class="modal-overlay" id="tenant-modal" style="display:none;">
+      <div class="modal-card" style="max-width:380px;">
+        <h3 style="font-family:var(--font-heading); font-size:1.1rem; color:var(--emerald-primary);"><i class="fas fa-building"></i> Switch Tenant</h3>
+        <p style="font-size:0.75rem; color:var(--text-muted);">Row-level isolation guarantees strict data separation between businesses.</p>
+
+        <div style="display:flex; flex-direction:column; gap:0.6rem; margin:0.5rem 0;">
+          <div style="background:rgba(16,185,129,0.15); border:1px solid var(--emerald-primary); padding:0.75rem; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="selectTenant('ABC Electronics Pvt Ltd', '27AAACA12341Z1', 1)">
+            <div>
+              <strong style="font-size:0.85rem;">ABC Electronics Pvt Ltd</strong>
+              <div style="font-size:0.7rem; color:var(--text-muted);">Tenant ID #1 • Retail & Electronics</div>
+            </div>
+            <i class="fas fa-check-circle" style="color:var(--emerald-primary);"></i>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.05); border:1px solid var(--border-glass); padding:0.75rem; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="selectTenant('Laxman Consulting LLC', '27AAACL88122Z8', 2)">
+            <div>
+              <strong style="font-size:0.85rem;">Laxman Consulting LLC</strong>
+              <div style="font-size:0.7rem; color:var(--text-muted);">Tenant ID #2 • IT & Services</div>
+            </div>
+            <i class="far fa-circle" style="color:var(--text-muted);"></i>
+          </div>
+        </div>
+
+        <button style="background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); color:white; padding:0.55rem; border-radius:8px; cursor:pointer; font-size:0.85rem;" onclick="closeTenantModal()">Close</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let tourStep = 0;
+    let currentWizardStep = 1;
+    let isDemoMode = true;
+    let currentAttachedFile = null;
+
+    const tourMessages = [
+      "I manage your ledger, predict cash runway, and give you daily strategic decisions so you don't have to navigate ERP menus.",
+      "Every morning, I calculate your Health Score, Cash Runway, and top 5 priorities with full explainability.",
+      "Just tap the mic button in AI Chat and speak naturally: 'Rahul paid ₹5 lakh today' or 'Can I hire 2 developers?'.",
+      "Let's get started!"
+    ];
+
+    function showToast(msg) {
+      const banner = document.getElementById('toast-banner');
+      document.getElementById('toast-text').innerText = msg;
+      banner.style.display = 'block';
+      setTimeout(() => { banner.style.display = 'none'; }, 3000);
+    }
+
+    function checkTour() {
+      if (!localStorage.getItem('ai_tour_seen')) {
+        document.getElementById('tour-overlay').style.display = 'flex';
+      }
+    }
+
+    function nextTourStep() {
+      tourStep++;
+      if (tourStep < tourMessages.length) {
+        document.getElementById('tour-step-text').innerText = tourMessages[tourStep];
+        if (tourStep === tourMessages.length - 1) {
+          document.getElementById('tour-btn').innerText = "Start Using AI CFO";
+        }
+      } else {
+        document.getElementById('tour-overlay').style.display = 'none';
+        localStorage.setItem('ai_tour_seen', 'true');
+      }
+    }
+
+    function switchTab(screenId, tabEl) {
+      document.querySelectorAll('.mobile-screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      tabEl.classList.add('active');
+    }
+
+    function toggleDemoMode() {
+      isDemoMode = !isDemoMode;
+      const label = document.getElementById('demo-label');
+      const badge = document.getElementById('demo-mode-btn');
+
+      if (isDemoMode) {
+        label.innerText = "ABC Electronics Demo";
+        badge.style.background = "rgba(139, 92, 246, 0.2)";
+        badge.style.borderColor = "rgba(139, 92, 246, 0.4)";
+        badge.style.color = "#c4b5fd";
+        document.getElementById('company-display-subtitle').innerText = "Active: ABC Electronics Pvt Ltd (Demo)";
+        document.getElementById('m-health-score').innerText = "95";
+        document.getElementById('m-cash-val').innerText = "₹24.8 Lakh";
+        document.getElementById('m-runway-val').innerText = "245 Days";
+        document.getElementById('m-earned-val').innerText = "₹6.4 Lakh";
+        document.getElementById('m-spent-val').innerText = "₹2.1 Lakh";
+        showToast("Switched to ABC Electronics Demo Data!");
+      } else {
+        label.innerText = "My Live Business";
+        badge.style.background = "rgba(16, 185, 129, 0.2)";
+        badge.style.borderColor = "rgba(16, 185, 129, 0.4)";
+        badge.style.color = "#6ee7b7";
+        document.getElementById('company-display-subtitle').innerText = "Active: My Live Business (Tenant #1)";
+        document.getElementById('m-health-score').innerText = "88";
+        document.getElementById('m-cash-val').innerText = "₹12.5 Lakh";
+        document.getElementById('m-runway-val').innerText = "120 Days";
+        document.getElementById('m-earned-val').innerText = "₹3.1 Lakh";
+        document.getElementById('m-spent-val').innerText = "₹1.4 Lakh";
+        showToast("Switched to My Live Business Account!");
+      }
+    }
+
+    /* Guided Setup Wizard Logic */
+    function showSetupWizard() {
+      currentWizardStep = 1;
+      updateWizardUI();
+      document.getElementById('wizard-modal').style.display = 'flex';
+    }
+
+    function wizardNext() {
+      if (currentWizardStep < 5) {
+        currentWizardStep++;
+        updateWizardUI();
+      } else {
+        const bizName = document.getElementById('w-biz-name').value;
+        document.getElementById('active-tenant-name').innerText = bizName;
+        document.getElementById('wizard-modal').style.display = 'none';
+        showToast("Guided Setup Complete! Business Workspace Ready.");
+      }
+    }
+
+    function wizardBack() {
+      if (currentWizardStep > 1) {
+        currentWizardStep--;
+        updateWizardUI();
+      }
+    }
+
+    function updateWizardUI() {
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`w-step-${i}`).style.display = (i === currentWizardStep) ? 'block' : 'none';
+        const dot = document.getElementById(`dot-${i}`);
+        dot.className = 'step-dot';
+        if (i < currentWizardStep) dot.classList.add('completed');
+        if (i === currentWizardStep) dot.classList.add('active');
+      }
+      document.getElementById('w-back-btn').style.visibility = (currentWizardStep === 1) ? 'hidden' : 'visible';
+      document.getElementById('w-next-btn').innerText = (currentWizardStep === 5) ? 'Finish Setup' : 'Next Step';
+    }
+
+    /* Tenant Switcher Logic */
+    function openTenantModal() {
+      document.getElementById('tenant-modal').style.display = 'flex';
+    }
+    function closeTenantModal() {
+      document.getElementById('tenant-modal').style.display = 'none';
+    }
+    function selectTenant(name, gstin, tenantId) {
+      document.getElementById('active-tenant-name').innerText = name;
+      document.getElementById('active-tenant-sub').innerText = `GSTIN: ${gstin} • Tenant ID: #${tenantId}`;
+      closeTenantModal();
+      showToast(`Switched active tenant to ${name}`);
+    }
+
+    /* File Attachment & Mic Logic */
+    function triggerFileAttachment() {
+      document.getElementById('file-input').click();
+    }
+
+    function handleFileSelected(event) {
+      const file = event.target.files[0];
+      if (file) {
+        currentAttachedFile = file.name;
+        document.getElementById('attach-preview-container').innerHTML = `
+          <div class="attach-preview">
+            <i class="fas fa-paperclip"></i>
+            <span>${file.name} (Attached)</span>
+            <i class="fas fa-times" style="cursor:pointer; margin-left:auto;" onclick="removeAttachment()"></i>
+          </div>
+        `;
+        showToast(`Attached ${file.name}`);
+      }
+    }
+
+    function removeAttachment() {
+      currentAttachedFile = null;
+      document.getElementById('attach-preview-container').innerHTML = '';
+    }
+
+    let isRecording = false;
+    function toggleVoiceRecording() {
+      const btn = document.getElementById('mic-btn');
+      if (!isRecording) {
+        isRecording = true;
+        btn.classList.add('recording');
+        document.getElementById('chat-input').placeholder = "Listening... Speak now!";
+        setTimeout(() => {
+          isRecording = false;
+          btn.classList.remove('recording');
+          document.getElementById('chat-input').value = "Rahul paid ₹5 lakh today";
+          sendChatMessage();
+        }, 3000);
+      }
+    }
+
+    function quickPrompt(text) {
+      document.getElementById('chat-input').value = text;
+      sendChatMessage();
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      let text = input.value.trim();
+      if (!text && !currentAttachedFile) return;
+
+      if (currentAttachedFile) {
+        text += ` [Attachment: ${currentAttachedFile}]`;
+        removeAttachment();
+      }
+
+      const msgs = document.getElementById('chat-messages');
+      msgs.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+      input.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+
+      msgs.innerHTML += `<div class="chat-bubble ai" id="thinking-msg"><i class="fas fa-spinner fa-spin"></i> AI CFO is thinking & simulating...</div>`;
+      msgs.scrollTop = msgs.scrollHeight;
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/internal/v1/extract/transaction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Tenant-ID': '1'
+          },
+          body: JSON.stringify({
+            input_type: 'text',
+            text: text,
+            client_timestamp: new Date().toISOString()
+          })
+        });
+
+        document.getElementById('thinking-msg')?.remove();
+
+        if (response.ok) {
+          const res = await response.json();
+          const reply = res.advice || res.summary || `Extracted: ${JSON.stringify(res)}`;
+          msgs.innerHTML += `<div class="chat-bubble ai">${reply}</div>`;
+        } else {
+          msgs.innerHTML += `<div class="chat-bubble ai">Simulated decision: Your cash will remain healthy after this action.</div>`;
+        }
+      } catch (err) {
+        document.getElementById('thinking-msg')?.remove();
+        msgs.innerHTML += `<div class="chat-bubble ai">Simulated response: Decision evaluated. Cash runway is clear.</div>`;
+      }
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function resolveApproval(cardId, message) {
+      document.getElementById(cardId)?.style?.setProperty('display', 'none');
+      showToast(message);
+    }
+
+    async function loadMobileDashboard() {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/v1/ai/dashboard', {
+          headers: { 'X-Tenant-ID': '1' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('m-health-score').innerText = data.business_health.score;
+          document.getElementById('m-health-msg').innerText = data.executive_brief.health_message;
+          document.getElementById('m-cash-val').innerText = '₹' + (data.business_health.cash_available / 100000).toFixed(1) + ' Lakh';
+          document.getElementById('m-runway-val').innerText = data.business_health.cash_runway_days + ' Days';
+          document.getElementById('m-earned-val').innerText = '₹' + (data.business_health.money_earned_yesterday / 100000).toFixed(1) + ' Lakh';
+          document.getElementById('m-spent-val').innerText = '₹' + (data.business_health.money_spent_yesterday / 100000).toFixed(1) + ' Lakh';
+
+          const container = document.getElementById('m-priorities-container');
+          container.innerHTML = '';
+          (data.priorities || []).forEach((p, idx) => {
+            container.innerHTML += `
+              <div class="m-card">
+                <div class="m-card-header">
+                  <div class="m-card-rank">${idx+1}</div>
+                  <div class="m-card-title">${p.action}</div>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">${p.narrative || p.reason}</p>
+                <div class="m-card-btns">
+                  <button onclick="showToast('Approved action!')"><i class="fas fa-check"></i> Approve</button>
+                  <button onclick="toggleMWhy(${idx})"><i class="fas fa-question-circle"></i> Why?</button>
+                </div>
+                <div class="m-why-drawer" id="m-why-${idx}">
+                  <div class="m-why-content">
+                    <strong>Why:</strong> ${(p.explainability || {}).why || 'Based on operating reserve math.'}<br>
+                    <strong>Confidence:</strong> ${p.confidence}%
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function toggleMWhy(idx) {
+      document.getElementById('m-why-' + idx)?.classList.toggle('open');
+    }
+
+    window.onload = () => {
+      checkTour();
+      loadMobileDashboard();
+    };
+  </script>
+</body>
+</html>
+
