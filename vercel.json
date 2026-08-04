@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/mobile", "destination": "/mobile/index.html" },
+    { "source": "/website", "destination": "/website/index.html" },
+    { "source": "/handbook", "destination": "/docs/AI_BUSINESS_OS_HANDBOOK.md" }
+  ]
+}
