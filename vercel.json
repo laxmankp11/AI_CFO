@@ -1,8 +1,4 @@
 {
-  "routes": [
-    { "src": "/website/?", "dest": "/website/index.html" },
-    { "src": "/mobile/?", "dest": "/mobile/index.html" },
-    { "src": "/handbook/?", "dest": "/docs/AI_BUSINESS_OS_HANDBOOK.md" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }
